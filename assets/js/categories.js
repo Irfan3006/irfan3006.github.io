@@ -177,7 +177,18 @@ const BLOG_CATEGORIES = ["K-Pop", "Blackpink", "BTS", "Jisoo", "Lisa", "ARMY", "
   "Review", "Recommendation", "Comparison", "Best Of", "Gift Guide", "Shopping", "Deals",
   "Q&A", "Poll", "Discussion", "Collaboration", "Challenge", "Contest", "Milestone",
   "Chill", "Hype", "Nostalgic", "Futuristic", "Happy", "Sad", "Inspirational", "Motivational",
-  "Tutorial", "How-to", "Tips & Tricks", "Life Hacks", "Life Lessons", "Uncategorized", "Irfan Syarifudin", "FanBlog"
+  "Tutorial", "How-to", "Tips & Tricks", "Life Hacks", "Life Lessons", "Uncategorized", "Irfan Syarifudin", "FanBlog",
+  "Architecture", "Interior Design", "Urban Design", "Landscape Architecture", "Sustainable Architecture", "Modern Architecture", 
+  "Classical Architecture", "Minimalist Home", "Building Information Modeling (BIM)", "Architectural Visualization", "Renovation", 
+  "Home Improvement", "Civil Engineering", "Structural Engineering", "Geotechnical Engineering", "Transportation Engineering", 
+  "Water Resources Engineering", "Construction Management", "Building Materials", "Concrete Construction", "Steel Structure", 
+  "Masonry", "Woodworking", "Carpentry", "Plumbing", "Electrical Engineering", "HVAC Systems", "Roofing", "Flooring", 
+  "Foundation Engineering", "Bridge Engineering", "Road & Highway Construction", "Infrastructure Development", 
+  "Real Estate Development", "Smart Home Technology", "Green Building", "Urban Planning", "Surveying", "Quantity Surveying", 
+  "AutoCAD", "SketchUp", "Revit", "Tukang Bangunan", "Tukang Kayu", "Tukang Cat", "Tukang Ledeng", "Tukang Listrik", 
+  "Tukang Las", "Tukang Keramik", "Alat Pertukangan", "Power Tools", "Hand Tools", "Konstruksi Baja", "Konstruksi Beton", 
+  "Estimasi Biaya Bangunan", "Keselamatan Kerja (K3)", "Izin Mendirikan Bangunan (IMB)", "Desain Eksterior", "Restorasi Bangunan", 
+  "Arsitektur Tradisional", "Material Bangunan Modern", "Sistem Irigasi", "Paving Block", "Desain Dapur"
 ];
 
 function populateCategorySelect(selectId, selectedValue = "") {
