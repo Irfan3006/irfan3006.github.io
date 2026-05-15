@@ -79,7 +79,7 @@
       const urlParams = new URLSearchParams(window.location.search);
       const postSlug = urlParams.get('slug');
 
-      if (!postSlug) { window.location.href = '/index.html'; return; }
+      if (!postSlug) { window.location.href = '/'; return; }
 
       const user = Auth.getSession();
       const res = await API.getPosts();
@@ -88,7 +88,7 @@
         if (post) {
           document.getElementById('post-title').innerText = post.title;
           document.getElementById('post-category').innerText = post.category;
-          document.getElementById('category-link').href = `/index.html?category=${encodeURIComponent(post.category)}`;
+          document.getElementById('category-link').href = `/pages/explore.html?category=${encodeURIComponent(post.category)}`;
           document.getElementById('post-meta').innerText = `Oleh ${post.author_name} \u2022 ${new Date(post.created_at).toLocaleDateString()}`;
           document.getElementById('post-body').innerHTML = sanitizeHTML(post.content);
           
@@ -169,7 +169,7 @@
           const res = await API.deletePost(id, user.id);
           if (res.success) {
             showToast('success', 'Postingan dihapus');
-            setTimeout(() => { window.location.href = '/index.html'; }, 1000);
+            setTimeout(() => { window.location.href = '/'; }, 1000);
           } else {
             showToast('error', 'Error', res.message);
           }

@@ -53,10 +53,10 @@ class Auth {
           confirmButtonColor: 'var(--accent)',
           confirmButtonText: 'Kembali ke Beranda'
         }).then(() => {
-          window.location.href = '/index.html';
+          window.location.href = '/';
         });
       } else {
-        window.location.href = '/index.html';
+        window.location.href = '/';
       }
     }
   }
@@ -71,10 +71,10 @@ class Auth {
           confirmButtonColor: 'var(--accent)',
           confirmButtonText: 'Ke Beranda'
         }).then(() => {
-          window.location.href = '/index.html';
+          window.location.href = '/';
         });
       } else {
-        window.location.href = '/index.html';
+        window.location.href = '/';
       }
     }
   }
@@ -157,7 +157,7 @@ function renderNavbar() {
   return `
   <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
-      <a class="navbar-brand d-flex align-items-center gap-2" href="/index.html">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="/">
         <img src="/assets/img/logo.webp" alt="FanBlog Logo" style="width: 35px; height: 35px; object-fit: contain;"> 
         <span class="fw-bold">FanBlog</span>
       </a>
@@ -166,7 +166,7 @@ function renderNavbar() {
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="/pages/explore.html">Explore</a></li>
           <li class="nav-item"><a class="nav-link" href="/pages/categories.html">Categories</a></li>
           <li class="nav-item"><a class="nav-link" href="/pages/trending.html">Trending</a></li>

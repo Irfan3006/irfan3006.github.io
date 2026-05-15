@@ -62,7 +62,7 @@
         <span class="text-muted">Belum punya akun?</span> <a href="/pages/signup.html" class="fw-bold text-primary">Daftar</a>
       </div>
       <div class="text-center mt-3">
-         <a href="/index.html" class="text-muted text-decoration-underline" style="font-size: 0.85rem;">Kembali ke Beranda</a>
+         <a href="/" class="text-muted text-decoration-underline" style="font-size: 0.85rem;">Kembali ke Beranda</a>
       </div>
     </form>
   </div>
@@ -106,7 +106,7 @@
           Auth.setSession(res.data);
           setTimeout(() => {
             if (res.data.role === 'admin') { window.location.href = '/pages/admin.html'; }
-            else { window.location.href = '/index.html'; }
+            else { window.location.href = '/'; }
           }, 1000);
         } else {
           alertBox.className = 'alert alert-danger animate__animated animate__shakeX';
