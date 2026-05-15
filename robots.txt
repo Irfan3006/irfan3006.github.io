@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /pages/admin.html
+Disallow: /pages/create-post.html
+Disallow: /pages/edit-post.html
+
+Sitemap: https://irfan3006.github.io/sitemap.xml

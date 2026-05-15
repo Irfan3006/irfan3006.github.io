@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore - FanBlog</title>
+  <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+  <meta name="description" content="Jelajahi berbagai artikel menarik di FanBlog. Temukan inspirasi dari berbagai penulis, topik hangat, dan berita terbaru dari komunitas.">
+  <meta name="keywords" content="blog, ugc, fanblog, eksplorasi konten, artikel terbaru, penulis blog, inspirasi">
+  <meta name="author" content="Irfan Syarifudin">
+  <link rel="canonical" href="https://irfan3006.github.io/pages/explore.html">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://irfan3006.github.io/pages/explore.html">
+  <meta property="og:title" content="Explore - FanBlog">
+  <meta property="og:description" content="Temukan artikel terbaik dan terbaru di FanBlog. Jelajahi ide-ide kreatif dari para penulis di komunitas kami.">
+  <meta property="og:image" content="https://irfan3006.github.io/assets/img/logo.webp">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://irfan3006.github.io/pages/explore.html">
+  <meta property="twitter:title" content="Explore - FanBlog">
+  <meta property="twitter:description" content="Temukan artikel terbaik dan terbaru di FanBlog. Jelajahi ide-ide kreatif dari para penulis di komunitas kami.">
+  <meta property="twitter:image" content="https://irfan3006.github.io/assets/img/logo.webp">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <main class="container py-5 mt-5">
+    <div class="row align-items-end mb-5" data-aos="fade-up">
+      <div class="col-md-6">
+        <h1 class="display-4 fw-bold">Explore <span class="text-primary">Content</span></h1>
+        <p class="text-muted lead mb-0">Temukan artikel terbaru dan terbaik dari komunitas kami.</p>
+      </div>
+      <div class="col-md-6 mt-4 mt-md-0">
+        <div class="input-group shadow-sm">
+          <span class="input-group-text border-end-0 bg-transparent"><i class="bi bi-search"></i></span>
+          <input type="text" id="exploreSearch" class="form-control border-start-0 ps-0" placeholder="Cari judul, konten, atau penulis...">
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4" id="explore-grid">
+      <!-- Skeletons -->
+      <div class="col-md-4"><div class="card p-5 skeleton" style="height: 300px;"></div></div>
+      <div class="col-md-4"><div class="card p-5 skeleton" style="height: 300px;"></div></div>
+      <div class="col-md-4"><div class="card p-5 skeleton" style="height: 300px;"></div></div>
+    </div>
+
+    <div id="empty-state" class="text-center py-5 d-none">
+      <i class="bi bi-search fs-1 text-muted"></i>
+      <h3 class="mt-3">Tidak menemukan hasil</h3>
+      <p class="text-muted">Coba gunakan kata kunci lain.</p>
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      AOS.init({ duration: 1000, once: true });
+      
+      const grid = document.getElementById('explore-grid');
+      const searchInput = document.getElementById('exploreSearch');
+      const emptyState = document.getElementById('empty-state');
+      
+      let allPosts = [];
+
+      async function init() {
+        const res = await API.getPosts();
+        if (res.success) {
+          allPosts = res.data;
+          
+          const urlParams = new URLSearchParams(window.location.search);
+          const catFilter = urlParams.get('category');
+          
+          if (catFilter) {
+            const filtered = allPosts.filter(p => p.category === catFilter);
+            renderPosts(filtered);
+            document.querySelector('h1').innerHTML = `Topic: <span class="text-primary">${escapeHTML(catFilter)}</span>`;
+            searchInput.value = catFilter;
+          } else {
+            renderPosts(allPosts);
+          }
+        } else {
+          showToast('error', 'Gagal memuat data', res.message);
+        }
+      }
+
+      function renderPosts(posts) {
+        grid.innerHTML = '';
+        if (posts.length === 0) {
+          emptyState.classList.remove('d-none');
+          return;
+        }
+        emptyState.classList.add('d-none');
+
+        posts.forEach(post => {
+          const card = document.createElement('div');
+          card.className = 'col-md-4 mb-4';
+          card.setAttribute('data-aos', 'fade-up');
+          
+          const thumb = post.thumbnail || '/assets/img/logo.webp';
+          const date = new Date(post.created_at).toLocaleDateString();
+          
+          // Simple excerpt
+          const temp = document.createElement('div');
+          temp.innerHTML = sanitizeHTML(post.content);
+          const excerpt = temp.textContent.substring(0, 80) + '...';
+
+          card.innerHTML = `
+            <div class="card h-100">
+              <div class="position-relative">
+                <img src="${escapeHTML(thumb)}" class="card-img-top" alt="${escapeHTML(post.title)}">
+                <a href="/pages/explore.html?category=${encodeURIComponent(post.category)}" class="badge bg-primary bg-opacity-75 position-absolute top-0 end-0 m-3 text-decoration-none">
+                  ${escapeHTML(post.category)}
+                </a>
+              </div>
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title mb-2">
+                  <a href="/pages/post.html?slug=${encodeURIComponent(post.slug)}" class="text-decoration-none text-white hover-accent">
+                    ${escapeHTML(post.title)}
+                  </a>
+                </h5>
+                <p class="text-muted small flex-grow-1">${escapeHTML(excerpt)}</p>
+                <div class="d-flex align-items-center mt-3 pt-3 border-top border-secondary border-opacity-10">
+                  <img src="${escapeHTML(post.author_avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author_name)}`)}" class="rounded-circle-img me-2" style="width:25px;height:25px;">
+                  <div class="small">
+                    <span class="text-white d-block fw-600">${escapeHTML(post.author_name)}</span>
+                    <span class="text-muted" style="font-size: 0.7rem;">${date}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      }
+
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        const filtered = allPosts.filter(p => 
+          p.title.toLowerCase().includes(query) || 
+          p.author_name.toLowerCase().includes(query) ||
+          p.category.toLowerCase().includes(query)
+        );
+        renderPosts(filtered);
+      });
+
+      init();
+    });
+  </script>
+</body>
+</html>

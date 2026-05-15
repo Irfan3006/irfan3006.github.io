@@ -1,0 +1,5 @@
+.vscode/
+.draft/
+.history/
+code.gs
+vercel.json

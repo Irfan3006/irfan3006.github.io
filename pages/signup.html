@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - FanBlog</title>
+  <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+  <meta name="description" content="Daftar akun FanBlog sekarang dan mulai bagikan cerita, ide, dan informasi kreatif Anda kepada komunitas.">
+  <meta name="author" content="Irfan Syarifudin">
+  <link rel="canonical" href="https://irfan3006.github.io/pages/signup.html">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://irfan3006.github.io/pages/signup.html">
+  <meta property="og:title" content="Sign Up - FanBlog">
+  <meta property="og:description" content="Bergabunglah dengan FanBlog. Platform blog modern untuk para penulis visioner.">
+  <meta property="og:image" content="https://irfan3006.github.io/assets/img/logo.webp">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <style>
+    .auth-bg { background: linear-gradient(135deg, var(--background) 0%, #121629 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 0; }
+    .auth-card { max-width: 450px; width: 100%; padding: 2.5rem; border-radius: var(--radius); }
+  </style>
+</head>
+<body class="auth-bg">
+  <div class="card auth-card shadow-lg border-0 animate__animated animate__fadeInUp bg-white">
+    <div class="text-center mb-4">
+      <img src="/assets/img/logo.webp" alt="Logo" class="mb-3 animate__animated animate__bounceIn" style="width: 60px;">
+      <h2 class="fw-bold text-dark mb-1">FanBlog</h2>
+      <p class="text-muted">Buat akun Anda untuk mulai menulis.</p>
+    </div>
+    <div id="auth-alert" class="alert d-none animate__animated animate__fadeIn" role="alert"></div>
+    <form id="signupForm">
+      <div class="mb-3">
+        <label class="form-label fw-500">Nama Pengguna</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-person"></i></span>
+          <input type="text" class="form-control" id="username" required minlength="3">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-500">Alamat Email</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+          <input type="email" class="form-control" id="email" required>
+        </div>
+      </div>
+      <div class="mb-4">
+        <label class="form-label fw-500">Kata Sandi</label>
+        <div class="input-group">
+          <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock"></i></span>
+          <input type="password" class="form-control border-start-0" id="password" required minlength="6" placeholder="Min. 6 karakter">
+          <button class="btn btn-outline-light border text-muted" type="button" id="togglePassword">
+            <i class="bi bi-eye"></i>
+          </button>
+        </div>
+        <div class="form-text mt-2"><i class="bi bi-info-circle me-1"></i> Kata sandi minimal harus 6 karakter.</div>
+      </div>
+      <button type="submit" class="btn btn-primary w-100 py-3 mb-3 shadow-sm d-flex align-items-center justify-content-center gap-2" id="submitBtn">
+        <span>Daftar Sekarang</span>
+        <div class="spinner-border spinner-border-sm d-none" role="status" id="loadingSpinner"></div>
+      </button>
+      <div class="text-center">
+        <span class="text-muted">Sudah punya akun?</span> <a href="/pages/login.html" class="fw-bold text-primary">Masuk</a>
+      </div>
+      <div class="text-center mt-3">
+         <a href="/index.html" class="text-muted text-decoration-underline" style="font-size: 0.85rem;">Kembali ke Beranda</a>
+      </div>
+    </form>
+  </div>
+
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Auth.checkAuthRedirect();
+      const togglePassword = document.querySelector('#togglePassword');
+      const password = document.querySelector('#password');
+      togglePassword.addEventListener('click', () => {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        togglePassword.querySelector('i').classList.toggle('bi-eye');
+        togglePassword.querySelector('i').classList.toggle('bi-eye-slash');
+      });
+
+      document.getElementById('signupForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = document.getElementById('submitBtn');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const user = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const pass = document.getElementById('password').value;
+        if(!user || !email || !pass) return;
+
+        submitBtn.disabled = true;
+        loadingSpinner.classList.remove('d-none');
+        submitBtn.querySelector('span').innerText = 'Memproses...';
+
+        const res = await API.register(user, email, pass);
+        submitBtn.disabled = false;
+        loadingSpinner.classList.add('d-none');
+        submitBtn.querySelector('span').innerText = 'Daftar Sekarang';
+
+        const alertBox = document.getElementById('auth-alert');
+        if(res.success) {
+          alertBox.className = 'alert alert-success animate__animated animate__fadeIn';
+          alertBox.textContent = 'Pendaftaran berhasil! Silakan login.';
+          alertBox.classList.remove('d-none');
+          setTimeout(() => { window.location.href = '/pages/login.html'; }, 1500);
+        } else {
+          alertBox.className = 'alert alert-danger animate__animated animate__shakeX';
+          alertBox.textContent = res.message || 'Pendaftaran Gagal. Silakan coba lagi.';
+          alertBox.classList.remove('d-none');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

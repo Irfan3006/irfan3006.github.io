@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - FanBlog</title>
+  <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+  <meta name="description" content="Pelajari lebih lanjut tentang FanBlog, visi kami dalam mendemokratisasi penulisan digital, dan teknologi serverless di balik platform blogging modern ini.">
+  <meta name="keywords" content="blog, ugc, fanblog, visi fanblog, teknologi blog, serverless blogging, irfan syarifudin">
+  <meta name="author" content="Irfan Syarifudin">
+  <link rel="canonical" href="https://irfan3006.github.io/pages/about.html">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://irfan3006.github.io/pages/about.html">
+  <meta property="og:title" content="About Us - FanBlog">
+  <meta property="og:description" content="Temukan cerita di balik FanBlog dan bagaimana kami membangun platform blogging modern menggunakan Google Sheets dan Apps Script.">
+  <meta property="og:image" content="https://irfan3006.github.io/assets/img/logo.webp">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://irfan3006.github.io/pages/about.html">
+  <meta property="twitter:title" content="About Us - FanBlog">
+  <meta property="twitter:description" content="Temukan cerita di balik FanBlog dan bagaimana kami membangun platform blogging modern menggunakan Google Sheets dan Apps Script.">
+  <meta property="twitter:image" content="https://irfan3006.github.io/assets/img/logo.webp">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <style>
+    body {
+      overflow-x: hidden;
+      background-color: var(--background);
+    }
+    .perspective-container {
+      perspective: 1500px;
+    }
+    /* Interactive 3D Card */
+    .interactive-card {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--stroke);
+      border-radius: 40px;
+      padding: 60px;
+      transform-style: preserve-3d;
+      transition: transform 0.1s ease-out;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+      overflow: hidden;
+    }
+    .glare {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at var(--x) var(--y), rgba(255,255,255,0.08) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 5;
+    }
+    .card-content-3d {
+      transform: translateZ(50px);
+    }
+    .floating-accent-blob {
+      position: absolute;
+      width: 200px; height: 200px;
+      background: var(--accent);
+      filter: blur(100px);
+      opacity: 0.15;
+      z-index: -1;
+      border-radius: 50%;
+    }
+
+    /* Process Steps */
+    .step-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--stroke);
+      border-radius: 30px;
+      padding: 40px;
+      text-align: center;
+      transition: all 0.4s ease;
+      position: relative;
+      transform-style: preserve-3d;
+    }
+    .step-card:hover {
+      transform: translateY(-15px) translateZ(30px);
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .step-number {
+      font-size: 4rem;
+      font-weight: 800;
+      color: var(--accent);
+      opacity: 0.1;
+      position: absolute;
+      top: 10px; right: 20px;
+      line-height: 1;
+    }
+
+    /* Roadmap Item */
+    .roadmap-item {
+      border-left: 3px solid var(--stroke);
+      padding-left: 35px;
+      margin-bottom: 50px;
+      position: relative;
+      transform: translateZ(20px);
+    }
+    .roadmap-item::before {
+      content: '';
+      position: absolute;
+      left: -11px; top: 0;
+      width: 20px; height: 20px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 15px var(--accent);
+    }
+
+    .info-tag {
+      background: rgba(42, 182, 246, 0.1);
+      color: var(--accent);
+      padding: 5px 15px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <!-- Hero Section -->
+  <section class="container py-5 mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-11 perspective-container">
+        <div class="interactive-card" id="heroCard">
+          <div class="glare" id="cardGlare"></div>
+          <div class="card-content-3d">
+            <div class="row align-items-center g-5">
+              <div class="col-lg-7" data-aos="fade-right">
+                <span class="info-tag">#FutureOfBlogging</span>
+                <h1 class="display-3 fw-bold mb-4">Mulai Menulis <br><span class="text-primary">Tanpa Batas</span></h1>
+                <p class="text-muted fs-5 mb-4">
+                  FanBlog adalah platform penulisan generasi berikutnya yang mengutamakan kecepatan, estetika, dan kemudahan akses data melalui integrasi cloud yang cerdas.
+                </p>
+                <div class="d-flex gap-4">
+                  <div>
+                    <h2 class="fw-bold text-primary mb-0">999+</h2>
+                    <small class="text-muted">Live Categories</small>
+                  </div>
+                  <div class="vr opacity-10"></div>
+                  <div>
+                    <h2 class="fw-bold text-primary mb-0">99%</h2>
+                    <small class="text-muted">Server Uptime</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-5 text-center" data-aos="zoom-in">
+                 <div class="p-5 rounded-circle border border-primary border-opacity-10 d-inline-block bg-primary shadow-lg" style="transform: translateZ(60px);">
+                    <i class="bi bi-feather fs-1 text-white"></i>
+                 </div>
+                 <div class="mt-4">
+                    <p class="fw-bold mb-1">Architecture:</p>
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                       <span class="badge bg-light text-dark border">Serverless</span>
+                       <span class="badge bg-light text-dark border">Sheets-DB</span>
+                       <span class="badge bg-light text-dark border">Security First</span>
+                    </div>
+                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <main class="container my-5 py-5">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <h2 class="fw-bold display-5">Cara Kerja <span class="text-primary">FanBlog</span></h2>
+      <p class="text-muted">Proses dibalik layar yang membuat konten Anda tetap aman dan cepat.</p>
+    </div>
+
+    <div class="row g-4 mb-5 pb-5">
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <div class="info-icon-3d mx-auto" style="width: 60px; height: 60px; font-size: 1.5rem; background: var(--accent); color: var(--background); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+            <i class="bi bi-pencil-square"></i>
+          </div>
+          <h4 class="fw-bold mt-4">Tulis Konten</h4>
+          <p class="text-muted small">Tulis artikel Anda menggunakan Markdown editor yang intuitif. Simpan sebagai draft atau publikasikan secara instan.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <div class="info-icon-3d mx-auto" style="width: 60px; height: 60px; font-size: 1.5rem; background: var(--accent); color: var(--background); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+            <i class="bi bi-cloud-arrow-up"></i>
+          </div>
+          <h4 class="fw-bold mt-4">Sinkronisasi Cloud</h4>
+          <p class="text-muted small">Data dikirim melalui Google Apps Script API yang aman dan disimpan langsung ke database privat Kami.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <div class="info-icon-3d mx-auto" style="width: 60px; height: 60px; font-size: 1.5rem; background: var(--accent); color: var(--background); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+            <i class="bi bi-globe2"></i>
+          </div>
+          <h4 class="fw-bold mt-4">Optimasi SEO</h4>
+          <p class="text-muted small">Sistem secara otomatis merender Meta Tags, Open Graph, dan Twitter Cards agar konten Anda optimal di hasil pencarian.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- More Info: Smart Categories & Performance -->
+    <div class="row align-items-center g-5 mt-5">
+      <div class="col-lg-6 perspective-container" data-aos="fade-right">
+        <div class="interactive-card p-5" id="taxoCard">
+          <div class="glare" id="taxoGlare"></div>
+          <div class="card-content-3d">
+            <h2 class="fw-bold mb-4">Smart <span class="text-primary">Categories</span></h2>
+            <p class="text-muted mb-4" style="line-height: 1.8;">
+              Kami menghadirkan sistem klasifikasi konten yang lengkap dengan 999+ kategori searchable, sehingga setiap ide unik punya tempatnya sendiri. 
+              <br><br>
+              Dirancang dengan keamanan sebagai prioritas, tetap ringan digunakan, dan mudah dipahami siapa saja.
+            </p>
+            <div class="row g-3">
+              <div class="col-6"><div class="p-3 bg-light rounded-4 border small">Cyber Security SOC</div></div>
+              <div class="col-6"><div class="p-3 bg-light rounded-4 border small">Academic MIT/UI</div></div>
+              <div class="col-6"><div class="p-3 bg-light rounded-4 border small">Gen Z Internet Lore</div></div>
+              <div class="col-6"><div class="p-3 bg-light rounded-4 border small">Philosophy & Logic</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6" data-aos="fade-left">
+        <h2 class="fw-bold mb-4">Roadmap <span class="text-primary">Pengembangan</span></h2>
+        <div class="roadmap-item">
+          <h6 class="fw-bold mb-2">V1.0 - Core Engine</h6>
+          <p class="text-muted small mb-0">Implementasi Google Sheets DB, CRUD Posts, dan User Authentication.</p>
+        </div>
+        <div class="roadmap-item">
+          <h6 class="fw-bold mb-2">V1.5 - SEO & Analytics</h6>
+          <p class="text-muted small mb-0">Integrasi Meta Tags dinamis, Sitemap otomatis, dan Tracking Pageviews.</p>
+        </div>
+        <div class="roadmap-item">
+          <h6 class="fw-bold mb-2">V1.9 - Security Hardening & Bug Fixes</h6>
+          <p class="text-muted small mb-0">Implementasi HTML Sanitizer (Anti-XSS), Session Integrity, Security Headers.</p>
+        </div>
+        <div class="roadmap-item opacity-50">
+          <h6 class="fw-bold mb-2">V2.0 - Community & AI (Future)</h6>
+          <p class="text-muted small mb-0">Sistem rekomendasi artikel berbasis AI dan fitur Interaksi Komunitas.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-5 pt-5 text-center perspective-container" data-aos="zoom-in">
+       <div class="interactive-card p-5" id="ctaCard">
+          <div class="glare" id="ctaGlare"></div>
+          <div class="card-content-3d">
+            <h2 class="display-5 fw-bold mb-3">Siap Menjadi Visioner?</h2>
+            <p class="text-muted mb-5">Daftar sekarang dan mulailah membangun pengaruh Anda di platform paling modern saat ini.</p>
+            <div class="d-flex justify-content-center gap-3">
+               <a href="/pages/signup.html" class="btn btn-primary btn-lg px-5 shadow">Bergabung Gratis</a>
+               <a href="/index.html" class="btn btn-outline-secondary btn-lg px-5">Lihat Hasil</a>
+            </div>
+          </div>
+       </div>
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      AOS.init({ duration: 1000, once: true });
+
+      function apply3DEffect(cardId, glareId) {
+        const card = document.getElementById(cardId);
+        const glare = document.getElementById(glareId);
+        
+        if(!card) return;
+
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          
+          const rotateX = (centerY - y) / 20;
+          const rotateY = (x - centerX) / 20;
+
+          card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+          
+          if(glare) {
+            glare.style.setProperty('--x', `${x}px`);
+            glare.style.setProperty('--y', `${y}px`);
+            glare.style.opacity = '1';
+          }
+        });
+
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+          if(glare) glare.style.opacity = '0';
+        });
+      }
+
+      apply3DEffect('heroCard', 'cardGlare');
+      apply3DEffect('taxoCard', 'taxoGlare');
+      apply3DEffect('ctaCard', 'ctaGlare');
+    });
+  </script>
+</body>
+</html>

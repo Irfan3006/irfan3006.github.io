@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Categories - FanBlog</title>
+  <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+  <meta name="description" content="Telusuri artikel FanBlog berdasarkan kategori. Temukan topik yang paling Anda minati mulai dari teknologi hingga gaya hidup.">
+  <meta name="keywords" content="blog, ugc, fanblog, kategori blog, topik artikel, teknologi, edukasi">
+  <meta name="author" content="Irfan Syarifudin">
+  <link rel="canonical" href="https://irfan3006.github.io/pages/categories.html">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://irfan3006.github.io/pages/categories.html">
+  <meta property="og:title" content="Categories - FanBlog">
+  <meta property="og:description" content="Telusuri berbagai kategori artikel menarik di FanBlog. Temukan komunitas dan topik yang sesuai dengan minat Anda.">
+  <meta property="og:image" content="https://irfan3006.github.io/assets/img/logo.webp">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://irfan3006.github.io/pages/categories.html">
+  <meta property="twitter:title" content="Categories - FanBlog">
+  <meta property="twitter:description" content="Telusuri berbagai kategori artikel menarik di FanBlog. Temukan komunitas dan topik yang sesuai dengan minat Anda.">
+  <meta property="twitter:image" content="https://irfan3006.github.io/assets/img/logo.webp">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <style>
+    .category-card {
+      background: var(--card-bg);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      transition: var(--transition);
+      cursor: pointer;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .category-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-10px);
+      background: rgba(79, 195, 247, 0.05);
+    }
+    .category-icon {
+      width: 60px;
+      height: 60px;
+      background: rgba(79, 195, 247, 0.1);
+      color: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <main class="container py-5 mt-5">
+    <div class="row justify-content-center mb-5" data-aos="fade-up">
+      <div class="col-lg-8 text-center">
+        <h1 class="display-4 fw-bold mb-3">Eksplorasi <span class="text-primary">Topik</span></h1>
+        <p class="text-muted lead mb-4">Temukan ribuan kategori artikel yang relevan dengan minat Anda.</p>
+        
+        <div class="input-group shadow-sm mx-auto" style="max-width: 500px;">
+          <span class="input-group-text border-end-0 bg-transparent"><i class="bi bi-search"></i></span>
+          <input type="text" id="categorySearch" class="form-control border-start-0 ps-0 py-3" placeholder="Cari kategori (misal: AI, Musik, Desain)...">
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4" id="categories-grid">
+      <!-- Injected via JS -->
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/categories.js"></script>
+  <script src="/assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      AOS.init({ duration: 1000, once: true });
+      
+      const grid = document.getElementById('categories-grid');
+      const searchInput = document.getElementById('categorySearch');
+      
+      let allUniqueCats = [...new Set(BLOG_CATEGORIES)];
+      let categoryCounts = {};
+
+      // Get counts of posts per category
+      const res = await API.getPosts();
+      if (res.success) {
+        res.data.forEach(p => {
+          categoryCounts[p.category] = (categoryCounts[p.category] || 0) + 1;
+        });
+      }
+
+      // Sort logic: 
+      // 1. Higher post count first
+      // 2. Alphabetical if counts are equal
+      allUniqueCats.sort((a, b) => {
+        const countA = categoryCounts[a] || 0;
+        const countB = categoryCounts[b] || 0;
+        
+        if (countB !== countA) {
+          return countB - countA;
+        }
+        return a.localeCompare(b);
+      });
+
+      function renderCategories(cats) {
+        if (cats.length === 0) {
+          grid.innerHTML = '<div class="col-12 text-center py-5 text-muted">Tidak menemukan kategori tersebut.</div>';
+          return;
+        }
+
+        grid.innerHTML = cats.map((cat, index) => `
+          <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="${(index % 4) * 50}">
+            <div class="category-card" onclick="window.location.href='/pages/explore.html?category=${encodeURIComponent(cat)}'">
+              <div class="category-icon">
+                <i class="bi bi-tag"></i>
+              </div>
+              <h5 class="fw-bold mb-1" style="font-size: 1rem;">${escapeHTML(cat)}</h5>
+              <p class="text-muted small mb-0">${categoryCounts[cat] || 0} Artikel</p>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Initial render (show all)
+      renderCategories(allUniqueCats);
+
+      // Search filtering
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        const filtered = allUniqueCats.filter(cat => cat.toLowerCase().includes(query));
+        renderCategories(filtered);
+      });
+    });
+  </script>
+</body>
+</html>

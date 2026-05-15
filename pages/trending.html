@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trending - FanBlog</title>
+  <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+  <meta name="description" content="Lihat apa yang sedang populer di FanBlog. Artikel dengan interaksi tertinggi dan topik hangat saat ini yang ditulis oleh komunitas.">
+  <meta name="keywords" content="blog, ugc, fanblog, trending blog, artikel populer, topik hangat, viral">
+  <meta name="author" content="Irfan Syarifudin">
+  <link rel="canonical" href="https://irfan3006.github.io/pages/trending.html">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://irfan3006.github.io/pages/trending.html">
+  <meta property="og:title" content="Trending - FanBlog">
+  <meta property="og:description" content="Cari tahu apa yang sedang populer di FanBlog. Simak artikel-artikel terbaru yang sedang banyak dibaca minggu ini.">
+  <meta property="og:image" content="https://irfan3006.github.io/assets/img/logo.webp">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://irfan3006.github.io/pages/trending.html">
+  <meta property="twitter:title" content="Trending - FanBlog">
+  <meta property="twitter:description" content="Cari tahu apa yang sedang populer di FanBlog. Simak artikel-artikel terbaru yang sedang banyak dibaca minggu ini.">
+  <meta property="twitter:image" content="https://irfan3006.github.io/assets/img/logo.webp">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <style>
+    .trending-number {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: var(--accent);
+      opacity: 0.1;
+      position: absolute;
+      top: -10px;
+      left: 0;
+      line-height: 1;
+      z-index: 0;
+      font-family: serif; /* Classic look for numbers */
+    }
+    .trending-card {
+      position: relative;
+      padding-left: 3.5rem;
+      transition: var(--transition);
+      border-radius: 20px;
+    }
+    .trending-card:hover {
+      background: rgba(255, 255, 255, 0.02) !important;
+      transform: translateX(5px);
+    }
+    .trending-title {
+      font-size: 1.1rem;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <main class="container py-5 mt-5">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <h1 class="display-4 fw-bold mb-3"><i class="bi bi-fire text-primary"></i> Trending <span class="text-primary">Now</span></h1>
+      <p class="text-muted lead">Artikel yang paling banyak dibicarakan dan dibaca minggu ini.</p>
+    </div>
+
+    <div class="row g-5" id="trending-list">
+      <!-- Injected via JS -->
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      AOS.init({ duration: 1000, once: true });
+      
+      const grid = document.getElementById('trending-list');
+      
+      const res = await API.getPosts();
+      if (res.success) {
+        const prioritySlugs = [
+          'profil-irfan-syarifudin-mahasiswa-teknik-komputer-dan-penggiat-keamanan-siber-id_9q',
+          'panduan-lengkap-cara-mulai-menulis-dan-berbagi-cerita-di-fanblog-id_8e'
+        ];
+
+        let allPosts = res.data;
+        let trendingPosts = [];
+
+        // Masukkan postingan prioritas sesuai urutan
+        prioritySlugs.forEach(slug => {
+          const post = allPosts.find(p => p.slug === slug);
+          if (post) {
+            trendingPosts.push(post);
+            allPosts = allPosts.filter(p => p.slug !== slug);
+          }
+        });
+
+        // Acak sisa postingan lainnya
+        const shuffled = allPosts.sort(() => 0.5 - Math.random());
+        
+        // Gabungkan dan ambil 10 besar
+        trendingPosts = [...trendingPosts, ...shuffled].slice(0, 10);
+        
+        renderTrending(trendingPosts);
+      }
+
+      function renderTrending(posts) {
+        grid.innerHTML = posts.map((post, index) => {
+          const date = new Date(post.created_at).toLocaleDateString();
+          const thumb = post.thumbnail || '/assets/img/logo.webp';
+          const number = (index + 1).toString().padStart(2, '0');
+          return `
+            <div class="col-md-6 mb-4" data-aos="fade-up" data-aos-delay="${index * 50}">
+              <div class="card h-100 trending-card border-0 bg-transparent p-3">
+                <div class="trending-number">${number}</div>
+                <div class="card-body p-0 d-flex gap-3 align-items-center">
+                  <div class="flex-grow-1">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                      <img src="${escapeHTML(post.author_avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author_name)}`)}" class="rounded-circle-img" style="width:24px;height:24px;">
+                      <span class="text-white small fw-bold">${escapeHTML(post.author_name)}</span>
+                      <span class="text-muted small">in</span>
+                      <a href="/pages/explore.html?category=${encodeURIComponent(post.category)}" class="text-primary small fw-bold text-decoration-none hover-accent">${escapeHTML(post.category)}</a>
+                    </div>
+                    <h5 class="fw-bold mb-2 trending-title">
+                      <a href="/pages/post.html?slug=${encodeURIComponent(post.slug)}" class="text-decoration-none text-white hover-accent stretched-link">
+                        ${escapeHTML(post.title)}
+                      </a>
+                    </h5>
+                    <div class="text-muted small d-flex align-items-center gap-2">
+                      <span>${date}</span>
+                      <span class="opacity-25">&bull;</span>
+                      <span>5 min read</span>
+                    </div>
+                  </div>
+                  <div class="flex-shrink-0 d-none d-sm-block">
+                    <img src="${escapeHTML(thumb)}" class="rounded-4 shadow-sm border border-secondary border-opacity-10" style="width: 85px; height: 85px; object-fit: cover;">
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    });
+  </script>
+</body>
+</html>

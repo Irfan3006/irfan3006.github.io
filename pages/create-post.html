@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Post - FanBlog</title>
+  <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+  <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    .editor-container { max-width: 800px; margin: 0 auto; }
+  </style>
+</head>
+<body>
+  <div id="navbar-placeholder"></div>
+
+  <main class="container my-5 min-vh-80 editor-container">
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4 p-md-5">
+        <h2 class="fw-bold mb-4">Write a New Post</h2>
+        <form id="createPostForm">
+          <div class="mb-4">
+            <label class="form-label fw-500">Judul Postingan</label>
+            <input type="text" class="form-control form-control-lg" id="title" placeholder="Masukkan judul yang menarik..." required>
+          </div>
+          <div class="row mb-4">
+            <div class="col-md-6 mb-3 mb-md-0">
+              <label class="form-label fw-500">Kategori</label>
+              <select class="form-select" id="category" required>
+                <option value="" disabled selected>Pilih Kategori...</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-500">URL Gambar Thumbnail</label>
+              <input type="url" class="form-control" id="thumbnail" placeholder="https://contoh.com/gambar.jpg">
+              <div class="form-text">Opsional.</div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-500">Konten</label>
+            <textarea id="contentEditor"></textarea>
+          </div>
+          <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+            <a href="/index.html" class="btn btn-light px-4">Batal</a>
+            <button type="submit" class="btn btn-primary px-4 d-flex align-items-center gap-2" id="submitBtn">
+              <span>Terbitkan Postingan</span>
+              <div class="spinner-border spinner-border-sm d-none" role="status" id="loadingSpinner"></div>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/categories.js"></script>
+  <script src="/assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Auth.requireLogin();
+      const user = Auth.getSession();
+      populateCategorySelect('category');
+
+      const simplemde = new SimpleMDE({ 
+        element: document.getElementById("contentEditor"),
+        spellChecker: false,
+        placeholder: "Tulis cerita Anda di sini..."
+      });
+
+      document.getElementById('createPostForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = document.getElementById('title').value;
+        const category = document.getElementById('category').value;
+        const thumbnail = document.getElementById('thumbnail').value;
+        const markdownContent = simplemde.value();
+        
+        if (!markdownContent) { showToast('error', 'Error', 'Konten tidak boleh kosong'); return; }
+        const htmlContent = marked.parse(markdownContent);
+
+        const postData = {
+          author_id: user.id,
+          author_name: user.username,
+          title: title,
+          category: category,
+          thumbnail: thumbnail,
+          content: htmlContent
+        };
+
+        const submitBtn = document.getElementById('submitBtn');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        submitBtn.disabled = true;
+        loadingSpinner.classList.remove('d-none');
+        submitBtn.querySelector('span').innerText = 'Menerbitkan...';
+
+        const res = await API.createPost(postData);
+        submitBtn.disabled = false;
+        loadingSpinner.classList.add('d-none');
+        submitBtn.querySelector('span').innerText = 'Terbitkan Postingan';
+
+        if (res.success) {
+          showToast('success', 'Postingan Diterbitkan!');
+          setTimeout(() => { window.location.href = `post.html?slug=${res.data.slug}`; }, 1500);
+        } else { showToast('error', 'Gagal menerbitkan', res.message); }
+      });
+    });
+  </script>
+</body>
+</html>

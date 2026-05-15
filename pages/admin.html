@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - FanBlog</title>
+  <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+  <meta name="robots" content="noindex, nofollow">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <style>
+    .admin-card { border-left: 4px solid var(--accent); }
+    .table, .table tr, .table td { background-color: transparent !important; color: var(--paragraph) !important; }
+    .table { margin-bottom: 0; }
+    .table thead th { background: rgba(255, 255, 255, 0.04) !important; color: var(--headline) !important; border: none; font-weight: 600; padding: 1.2rem 1rem; }
+    .table td { border-color: rgba(255,255,255,0.05) !important; padding: 1.2rem 1rem; }
+    .table-hover tbody tr:hover { background-color: rgba(255,255,255,0.02) !important; color: var(--headline); }
+    .badge-admin { background: rgba(239, 68, 68, 0.1) !important; color: #ef4444 !important; border: 1px solid rgba(239, 68, 68, 0.2); }
+    .badge-user { background: rgba(79, 195, 247, 0.1) !important; color: var(--accent) !important; border: 1px solid rgba(79, 195, 247, 0.2); }
+  </style>
+</head>
+<body>
+  <div id="navbar-placeholder"></div>
+
+  <div class="container-fluid my-4 px-4">
+    <div class="row">
+      <div class="col-md-3 col-lg-2 mb-4">
+        <div class="card shadow-sm border-0 h-100">
+          <div class="card-body p-0">
+            <div class="list-group list-group-flush border-0">
+              <a href="#dashboard" class="list-group-item list-group-item-action active border-0 rounded-0 py-3" data-bs-toggle="pill">
+                <i class="bi bi-speedometer2 me-2"></i> Dashboard
+              </a>
+              <a href="#users" class="list-group-item list-group-item-action border-0 py-3" data-bs-toggle="pill">
+                <i class="bi bi-people me-2"></i> Kelola Pengguna
+              </a>
+              <a href="#posts" class="list-group-item list-group-item-action border-0 py-3" data-bs-toggle="pill">
+                <i class="bi bi-file-text me-2"></i> Kelola Postingan
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-9 col-lg-10">
+        <h2 class="fw-bold mb-4">Admin Dashboard</h2>
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="dashboard">
+            <div class="row g-4 mb-4">
+              <div class="col-sm-6 col-xl-3">
+                <div class="card admin-card shadow-sm border-0">
+                  <div class="card-body">
+                    <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0 bg-primary bg-opacity-10 p-3 rounded">
+                        <i class="bi bi-people fs-3 text-primary"></i>
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                        <p class="text-muted mb-0">Total Pengguna</p>
+                        <h3 class="mb-0 fw-bold" id="stat-users">-</h3>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xl-3">
+                <div class="card admin-card shadow-sm border-0" style="border-left-color: #10b981;">
+                  <div class="card-body">
+                    <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0 bg-success bg-opacity-10 p-3 rounded">
+                        <i class="bi bi-file-earmark-text fs-3 text-success"></i>
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                        <p class="text-muted mb-0">Total Postingan</p>
+                        <h3 class="mb-0 fw-bold" id="stat-posts">-</h3>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card shadow-sm border-0">
+              <div class="card-body">
+                <h5 class="card-title fw-bold">Welcome Admin</h5>
+                <p class="text-muted">Moderasi konten dan kelola pengguna dari panel ini.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="users">
+            <div class="card shadow-sm border-0">
+              <div class="card-body">
+                <h5 class="card-title fw-bold mb-4">User Management</h5>
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle">
+                    <thead>
+                      <tr>
+                        <th>Avatar</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Joined</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="users-table-body">
+                      <tr><td colspan="6" class="text-center">Loading...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="posts">
+            <div class="card shadow-sm border-0">
+              <div class="card-body">
+                <h5 class="card-title fw-bold mb-4">Post Moderation</h5>
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle">
+                    <thead>
+                      <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="posts-table-body">
+                      <tr><td colspan="5" class="text-center">Loading...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      Auth.requireAdmin();
+      const user = Auth.getSession();
+      let users = [];
+      let posts = [];
+
+      async function loadData() {
+        const [usersRes, postsRes] = await Promise.all([API.getUsers(), API.getPosts()]);
+        if(usersRes.success) {
+          users = usersRes.data;
+          document.getElementById('stat-users').innerText = users.length;
+          renderUsers(users);
+        }
+        if(postsRes.success) {
+          posts = postsRes.data;
+          document.getElementById('stat-posts').innerText = posts.length;
+          renderPosts(posts);
+        }
+      }
+
+      function renderUsers(usersList) {
+        const tbody = document.getElementById('users-table-body');
+        if(usersList.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" class="text-center">Pengguna tidak ditemukan</td></tr>';
+          return;
+        }
+        tbody.innerHTML = usersList.map(u => {
+          const safeUsername = escapeHTML(u.username);
+          const safeEmail = escapeHTML(u.email);
+          const safeAvatar = escapeHTML(u.avatar || '');
+          const safeRole = escapeHTML(u.role);
+          return `
+          <tr>
+            <td><img src="${safeAvatar}" class="rounded-circle-img" style="width:40px;height:40px;border: 1px solid var(--stroke);" referrerpolicy="no-referrer"></td>
+            <td class="fw-600 text-white">${safeUsername}</td>
+            <td style="color: var(--paragraph); opacity: 0.8;">${safeEmail}</td>
+            <td><span class="badge ${u.role === 'admin' ? 'badge-admin' : 'badge-user'} text-uppercase" style="font-size: 0.7rem; letter-spacing: 1px;">${safeRole}</span></td>
+            <td style="color: var(--paragraph); opacity: 0.6; font-size:0.85rem;">${new Date(u.created_at).toLocaleDateString()}</td>
+            <td>
+              ${u.id !== user.id ? `<button class="btn btn-sm btn-link text-danger p-0" onclick="deleteUser('${escapeHTML(u.id)}')" title="Hapus Pengguna"><i class="bi bi-trash3 fs-5"></i></button>` : '<span class="badge bg-secondary bg-opacity-10 text-muted">YOU</span>'}
+            </td>
+          </tr>
+        `;
+        }).join('');
+      }
+
+      function renderPosts(postsList) {
+        const tbody = document.getElementById('posts-table-body');
+        if(postsList.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" class="text-center">Postingan tidak ditemukan</td></tr>';
+          return;
+        }
+        tbody.innerHTML = postsList.map(p => {
+          const safeTitle = escapeHTML(p.title);
+          const safeAuthor = escapeHTML(p.author_name);
+          const safeCategory = escapeHTML(p.category);
+          const safeSlug = encodeURIComponent(p.slug);
+          return `
+          <tr>
+            <td class="fw-600"><a href="/pages/post.html?slug=${safeSlug}" target="_blank" rel="noopener noreferrer" class="text-white text-decoration-none hover-accent">${safeTitle}</a></td>
+            <td style="color: var(--paragraph);">${safeAuthor}</td>
+            <td><span class="badge badge-user">${safeCategory}</span></td>
+            <td style="color: var(--paragraph); opacity: 0.6; font-size:0.85rem;">${new Date(p.created_at).toLocaleDateString()}</td>
+            <td>
+              <div class="d-flex gap-2">
+                <a href="/pages/edit-post.html?id=${encodeURIComponent(p.id)}" class="btn btn-sm btn-link text-primary p-0" title="Edit"><i class="bi bi-pencil-square fs-5"></i></a>
+                <button class="btn btn-sm btn-link text-danger p-0" onclick="deletePost('${escapeHTML(p.id)}')" title="Hapus"><i class="bi bi-trash3 fs-5"></i></button>
+              </div>
+            </td>
+          </tr>
+        `;
+        }).join('');
+      }
+
+      window.deleteUser = async (id) => {
+        const result = await Swal.fire({
+          title: 'Apakah Anda yakin?',
+          text: "Ini juga akan menghapus semua postingan dari pengguna ini!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#dc3545',
+          confirmButtonText: 'Ya, hapus pengguna',
+          cancelButtonText: 'Batal'
+        });
+        if (result.isConfirmed) {
+          const res = await API.deleteUser(id, user.id);
+          if (res.success) {
+            showToast('success', 'Pengguna berhasil dihapus');
+            loadData();
+          } else { showToast('error', 'Error', res.message); }
+        }
+      };
+
+      window.deletePost = async (id) => {
+        const result = await Swal.fire({
+          title: 'Apakah Anda yakin?',
+          text: "Anda akan menghapus postingan ini.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#dc3545',
+          confirmButtonText: 'Ya, hapus postingan',
+          cancelButtonText: 'Batal'
+        });
+        if (result.isConfirmed) {
+          const res = await API.deletePost(id, user.id);
+          if (res.success) {
+            showToast('success', 'Postingan berhasil dihapus');
+            loadData();
+          } else { showToast('error', 'Error', res.message); }
+        }
+      };
+
+      const triggerTabList = [].slice.call(document.querySelectorAll('.list-group-item'))
+      triggerTabList.forEach(function (triggerEl) {
+        triggerEl.addEventListener('click', function (e) {
+          e.preventDefault()
+          triggerTabList.forEach(el => el.classList.remove('active'))
+          this.classList.add('active')
+        })
+      });
+      loadData();
+    });
+  </script>
+</body>
+</html>

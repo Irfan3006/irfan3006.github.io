@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FanBlog - Where Ideas Find Their Voice</title>
+  <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+  <meta name="description" content="FanBlog adalah platform blog modern, minimalis, dan responsif untuk berbagi ide, cerita, dan informasi kreatif.">
+  <meta name="keywords" content="blog, ugc, fanblog, modern blog, personal blog, google sheets database, irfan syarifudin">
+  <meta name="author" content="Irfan Syarifudin">
+  <link rel="canonical" href="https://irfan3006.github.io/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://irfan3006.github.io/">
+  <meta property="og:title" content="FanBlog - Where Ideas Find Their Voice">
+  <meta property="og:description" content="FanBlog adalah platform blog modern, minimalis, dan responsif untuk berbagi ide, cerita, dan informasi kreatif.">
+  <meta property="og:image" content="https://irfan3006.github.io/assets/img/logo.webp">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://irfan3006.github.io/">
+  <meta property="twitter:title" content="FanBlog - Where Ideas Find Their Voice">
+  <meta property="twitter:description" content="FanBlog adalah platform blog modern, minimalis, dan responsif untuk berbagi ide, cerita, dan informasi kreatif.">
+  <meta property="twitter:image" content="https://irfan3006.github.io/assets/img/logo.webp">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <style>
+    .hero-gradient {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 50% 30%, rgba(79, 195, 247, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .perspective-container { perspective: 2000px; }
+    .hero-card-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.1s ease-out;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--stroke);
+      border-radius: 40px;
+      padding: 60px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+    }
+    .feature-icon-box {
+      width: 50px; height: 50px;
+      background: rgba(79, 195, 247, 0.1);
+      color: var(--accent);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    .stat-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--stroke);
+      border-radius: 20px;
+      padding: 20px;
+      transition: var(--transition);
+    }
+    .stat-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <header class="container-fluid py-5 mt-5 position-relative overflow-hidden">
+    <div class="hero-gradient"></div>
+    <div class="container py-5">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6" data-aos="fade-right">
+          <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 mb-3">#1 Modern Blogging Platform</span>
+          <h1 class="display-2 fw-bold mb-4">Cara Baru Dalam <br><span class="text-primary">Menulis</span></h1>
+          <p class="text-muted fs-5 mb-5" style="max-width: 500px;">
+            Platform blogging tercepat dengan desain glassmorphism yang memukau. Bagikan ide Anda, bangun audiens, dan jadilah bagian dari masa depan konten digital.
+          </p>
+          <div class="d-flex gap-3">
+            <a href="/pages/signup.html" class="btn btn-primary btn-lg px-5 shadow-lg">Mulai Sekarang</a>
+            <a href="#feed" class="btn btn-outline-secondary btn-lg px-4">Lihat Cerita</a>
+          </div>
+        </div>
+        <div class="col-lg-6 perspective-container" data-aos="zoom-in">
+          <div class="hero-card-3d" id="heroTilt">
+            <div style="transform: translateZ(50px);">
+              <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="feature-icon-box mb-0"><i class="bi bi-lightning-charge-fill"></i></div>
+                <h4 class="fw-bold mb-0">Ultra Fast Engine</h4>
+              </div>
+              <p class="text-muted mb-4">Menggunakan Google Apps Script API yang dioptimasi untuk kecepatan render instan dan keamanan data tingkat tinggi.</p>
+              <div class="row g-3">
+                <div class="col-6">
+                  <div class="stat-card">
+                    <h3 class="fw-bold text-white mb-0">999+</h3>
+                    <small class="text-muted">Topics</small>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="stat-card">
+                    <h3 class="fw-bold text-white mb-0">99.9%</h3>
+                    <small class="text-muted">Uptime</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="container py-5">
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="card p-4 h-100 border-0 bg-transparent">
+          <div class="feature-icon-box"><i class="bi bi-shield-check"></i></div>
+          <h4 class="fw-bold">Security First</h4>
+          <p class="text-muted">Sanitasi HTML otomatis dan proteksi XSS berlapis menjaga konten Anda tetap aman.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="card p-4 h-100 border-0 bg-transparent">
+          <div class="feature-icon-box"><i class="bi bi-markdown"></i></div>
+          <h4 class="fw-bold">Markdown Ready</h4>
+          <p class="text-muted">Tulis dengan format markdown yang fleksibel dan lihat hasilnya secara instan di feed.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="card p-4 h-100 border-0 bg-transparent">
+          <div class="feature-icon-box"><i class="bi bi-graph-up-arrow"></i></div>
+          <h4 class="fw-bold">SEO Optimized</h4>
+          <p class="text-muted">Generate Meta Tags, Open Graph, dan Twitter Cards secara dinamis untuk setiap post.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="feed" class="container py-5 my-5">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5" data-aos="fade-up">
+      <div>
+        <h2 class="display-5 fw-bold mb-0">Jelajahi <span class="text-primary">Cerita.</span></h2>
+        <p class="text-muted mt-2">Dapatkan inspirasi dari berbagai penulis pilihan kami.</p>
+      </div>
+      <div class="mt-4 mt-md-0" style="min-width: 300px;">
+        <div class="input-group shadow-sm">
+          <span class="input-group-text border-end-0 bg-transparent"><i class="bi bi-search"></i></span>
+          <input type="text" id="searchInput" class="form-control border-start-0 ps-0" placeholder="Cari artikel...">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="row g-4" id="posts-grid">
+           <div class="col-md-4"><div class="card p-5 skeleton" style="height: 350px;"></div></div>
+           <div class="col-md-4"><div class="card p-5 skeleton" style="height: 350px;"></div></div>
+           <div class="col-md-4"><div class="card p-5 skeleton" style="height: 350px;"></div></div>
+        </div>
+        <div id="empty-state" class="text-center py-5 d-none">
+          <i class="bi bi-inbox fs-1 text-muted"></i>
+          <h4 class="mt-3">Belum ada artikel ditemukan</h4>
+          <p class="text-muted">Coba gunakan kata kunci lain atau filter kategori berbeda.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="text-center mt-5" data-aos="fade-up">
+      <a href="/pages/explore.html" class="btn btn-outline-primary px-5 py-3 rounded-pill">Lihat Semua Cerita <i class="bi bi-arrow-right ms-2"></i></a>
+    </div>
+  </section>
+
+  <section class="container py-5 mb-5">
+    <div class="card p-5 border-0 text-center position-relative overflow-hidden" data-aos="zoom-in" style="background: rgba(79, 195, 247, 0.03); border: 1px solid var(--stroke) !important; border-radius: 40px;">
+      <div class="hero-gradient" style="opacity: 0.5;"></div>
+      <div class="py-4 position-relative">
+        <h2 class="display-5 fw-bold mb-4">Mulai Perjalanan Anda Bersama <span class="text-primary">FanBlog</span></h2>
+        <p class="text-muted mb-5 mx-auto" style="max-width: 600px;">Daftar gratis hari ini dan bergabunglah dengan ribuan kreator lainnya untuk membangun kehadiran digital Anda.</p>
+        <div class="d-flex justify-content-center gap-3">
+          <a href="/pages/signup.html" class="btn btn-primary btn-lg px-5">Gabung Sekarang</a>
+          <a href="/pages/about.html" class="btn btn-outline-secondary btn-lg px-5">Pelajari Lebih Lanjut</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      AOS.init({ duration: 1000, once: true });
+
+      const heroTilt = document.getElementById('heroTilt');
+      if (heroTilt) {
+        heroTilt.addEventListener('mousemove', (e) => {
+          const rect = heroTilt.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const rotateX = (rect.height / 2 - y) / 20;
+          const rotateY = (x - rect.width / 2) / 20;
+          heroTilt.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+        heroTilt.addEventListener('mouseleave', () => {
+          heroTilt.style.transform = `rotateX(0deg) rotateY(0deg)`;
+        });
+      }
+
+      const grid = document.getElementById('posts-grid');
+      let allPosts = [];
+
+      function getDefaultPosts() {
+        const pinnedSlugs = [
+          'profil-irfan-syarifudin-mahasiswa-teknik-komputer-dan-penggiat-keamanan-siber-id_9q',
+          'panduan-lengkap-cara-mulai-menulis-dan-berbagi-cerita-di-fanblog-id_8e',
+        ];
+        const pinnedPosts = pinnedSlugs.map(slug => allPosts.find(p => p.slug === slug)).filter(Boolean);
+        const latestPost = allPosts.find(p => !pinnedSlugs.includes(p.slug));
+        
+        const displayPosts = [];
+        if (latestPost) displayPosts.push(latestPost);
+        displayPosts.push(...pinnedPosts);
+        
+        return displayPosts;
+      }
+
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const catFilter = urlParams.get('category');
+        if (catFilter) {
+          document.title = `${catFilter} - FanBlog`;
+        }
+
+        const res = await API.getPosts();
+        if (res.success) {
+          allPosts = res.data;
+          if (catFilter) {
+            renderPosts(allPosts.filter(p => p.category === catFilter));
+          } else {
+            renderPosts(getDefaultPosts());
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load posts", err);
+      }
+
+      function renderPosts(posts) {
+        grid.innerHTML = '';
+        if (posts.length === 0) {
+          document.getElementById('empty-state').classList.remove('d-none');
+          return;
+        }
+        document.getElementById('empty-state').classList.add('d-none');
+
+        const html = posts.map(post => {
+          const thumb = post.thumbnail || '/assets/img/logo.webp';
+          const date = new Date(post.created_at).toLocaleDateString();
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = sanitizeHTML(post.content);
+          const excerpt = tempDiv.textContent.substring(0, 100) + '...';
+
+          return `
+            <div class="col-md-4 mb-4" data-aos="fade-up">
+              <div class="card h-100 position-relative animate-up">
+                <img src="${escapeHTML(thumb)}" class="card-img-top" alt="${escapeHTML(post.title)}">
+                <div class="card-body d-flex flex-column">
+                  <a href="/pages/explore.html?category=${encodeURIComponent(post.category)}" class="badge bg-primary bg-opacity-10 text-primary mb-2 align-self-start text-decoration-none">${escapeHTML(post.category)}</a>
+                  <h5 class="card-title fw-bold">
+                    <a href="/pages/post.html?slug=${encodeURIComponent(post.slug)}" class="text-decoration-none text-white hover-accent stretched-link">
+                      ${escapeHTML(post.title)}
+                    </a>
+                  </h5>
+                  <p class="card-text text-muted small flex-grow-1">${escapeHTML(excerpt)}</p>
+                  <div class="d-flex align-items-center mt-3 pt-3 border-top border-secondary border-opacity-10">
+                    <img src="${escapeHTML(post.author_avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author_name)}`)}" class="rounded-circle-img me-2" style="width:25px;height:25px;">
+                    <div class="small">
+                      <span class="text-white d-block fw-600">${escapeHTML(post.author_name)}</span>
+                      <span class="text-muted" style="font-size: 0.7rem;">${date}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+        grid.innerHTML = html;
+      }
+
+      document.getElementById('searchInput').addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        if (!query) {
+          renderPosts(getDefaultPosts());
+          return;
+        }
+        const filtered = allPosts.filter(p => p.title.toLowerCase().includes(query) || p.content.toLowerCase().includes(query));
+        renderPosts(filtered.slice(0, 3));
+      });
+    });
+  </script>
+</body>
+</html>

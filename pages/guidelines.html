@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community Guidelines - FanBlog</title>
+  <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+  <meta name="description" content="Standar komunitas dan aturan penggunaan platform FanBlog. Pelajari cara berkontribusi secara positif dan menjaga keamanan lingkungan kreatif kami.">
+  <meta name="keywords" content="blog, ugc, fanblog, panduan komunitas, aturan menulis, kebijakan konten, standar keamanan">
+  <meta name="author" content="Irfan Syarifudin">
+  <link rel="canonical" href="https://irfan3006.github.io/pages/guidelines.html">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://irfan3006.github.io/pages/guidelines.html">
+  <meta property="og:title" content="Community Guidelines - FanBlog">
+  <meta property="og:description" content="Baca panduan komunitas FanBlog untuk memahami standar penulisan dan interaksi di platform kami.">
+  <meta property="og:image" content="https://irfan3006.github.io/assets/img/logo.webp">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://irfan3006.github.io/pages/guidelines.html">
+  <meta property="twitter:title" content="Community Guidelines - FanBlog">
+  <meta property="twitter:description" content="Baca panduan komunitas FanBlog untuk memahami standar penulisan dan interaksi di platform kami.">
+  <meta property="twitter:image" content="https://irfan3006.github.io/assets/img/logo.webp">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <style>
+    .guideline-section {
+      background: var(--card-bg);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 3rem;
+      margin-bottom: 2rem;
+      transition: var(--transition);
+    }
+    .guideline-section:hover {
+      border-color: rgba(79, 195, 247, 0.3);
+      box-shadow: var(--shadow-hover);
+    }
+    .icon-box {
+      width: 60px;
+      height: 60px;
+      background: rgba(79, 195, 247, 0.1);
+      color: var(--accent);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .rule-list {
+      list-style: none;
+      padding-left: 0;
+    }
+    .rule-list li {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--paragraph);
+    }
+    .rule-list li::before {
+      content: "\F26E"; /* Bootstrap check icon */
+      font-family: "bootstrap-icons";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+    .prohibited li::before {
+      content: "\F622"; /* Bootstrap x icon */
+      color: #ef4444;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <main class="container py-5 mt-5">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <span class="badge bg-primary bg-opacity-10 text-primary mb-3">Community Standards</span>
+      <h1 class="display-4 fw-bold mb-3">Panduan <span class="text-primary">Komunitas</span></h1>
+      <p class="text-muted lead">Membangun ekosistem kreatif yang aman, inklusif, dan menginspirasi.</p>
+    </div>
+
+    <div class="row g-4">
+      
+      <!-- Content Standards -->
+      <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+        <div class="guideline-section h-100">
+          <div class="icon-box">
+            <i class="bi bi-journal-text"></i>
+          </div>
+          <h3 class="fw-bold mb-4">Standar Konten</h3>
+          <p class="text-muted mb-4">Kami mendorong orisinalitas dan kreativitas dalam setiap tulisan Anda.</p>
+          <ul class="rule-list">
+            <li>Pastikan konten adalah karya asli atau memiliki izin.</li>
+            <li>Gunakan kategori yang relevan untuk setiap tulisan.</li>
+            <li>Berikan atribusi yang jelas untuk sumber eksternal.</li>
+            <li>Gunakan bahasa yang sopan dan mudah dipahami.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Prohibited Actions -->
+      <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
+        <div class="guideline-section h-100 border-danger border-opacity-10">
+          <div class="icon-box" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">
+            <i class="bi bi-shield-x"></i>
+          </div>
+          <h3 class="fw-bold mb-4">Hal yang Dilarang</h3>
+          <p class="text-muted mb-4">Pelanggaran terhadap hal ini dapat berakibat pada penghapusan konten atau akun.</p>
+          <ul class="rule-list prohibited">
+            <li>Dilarang menyebarkan berita bohong (Hoax) atau ujaran kebencian.</li>
+            <li>Dilarang mempublikasikan konten yang mengandung SARA atau kekerasan.</li>
+            <li>Dilarang melakukan spamming atau promosi berlebihan.</li>
+            <li>Dilarang mengeksploitasi celah keamanan sistem.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Safety & Privacy -->
+      <div class="col-lg-12" data-aos="fade-up" data-aos-delay="300">
+        <div class="guideline-section text-center">
+          <div class="icon-box mx-auto">
+            <i class="bi bi-shield-lock"></i>
+          </div>
+          <h3 class="fw-bold mb-4">Keamanan & Privasi</h3>
+          <div class="row justify-content-center">
+            <div class="col-md-8">
+              <p class="text-muted mb-5">Kami berkomitmen melindungi identitas Anda. Jangan pernah membagikan kredensial login atau informasi pribadi sensitif di dalam konten publik Anda. Jika Anda menemukan pelanggaran, segera laporkan kepada tim moderator kami.</p>
+              <div class="d-flex justify-content-center gap-3">
+                <a href="/pages/faq.html" class="btn btn-outline-primary px-4">Buka FAQ Keamanan</a>
+                <a href="/pages/signup.html" class="btn btn-primary px-4">Bergabung Sekarang</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      AOS.init({ duration: 1000, once: true });
+    });
+  </script>
+</body>
+</html>
