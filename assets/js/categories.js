@@ -188,7 +188,7 @@ const BLOG_CATEGORIES = ["K-Pop", "Blackpink", "BTS", "Jisoo", "Lisa", "ARMY", "
   "AutoCAD", "SketchUp", "Revit", "Tukang Bangunan", "Tukang Kayu", "Tukang Cat", "Tukang Ledeng", "Tukang Listrik", 
   "Tukang Las", "Tukang Keramik", "Alat Pertukangan", "Power Tools", "Hand Tools", "Konstruksi Baja", "Konstruksi Beton", 
   "Estimasi Biaya Bangunan", "Keselamatan Kerja (K3)", "Izin Mendirikan Bangunan (IMB)", "Desain Eksterior", "Restorasi Bangunan", 
-  "Arsitektur Tradisional", "Material Bangunan Modern", "Sistem Irigasi", "Paving Block", "Desain Dapur"
+  "Arsitektur Tradisional", "Material Bangunan Modern", "Sistem Irigasi", "Paving Block", "Desain Dapur", "Kuli"
 ];
 
 function populateCategorySelect(selectId, selectedValue = "") {
