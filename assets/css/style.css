@@ -121,6 +121,15 @@ a:hover, .hover-accent:hover {
   background: rgba(255, 255, 255, 0.05);
 }
 
+.navbar-toggler {
+  color: var(--headline) !important;
+  transition: var(--transition);
+}
+
+.navbar-toggler:hover {
+  color: var(--accent) !important;
+}
+
 /* Buttons */
 .btn-primary {
   background: var(--accent);
