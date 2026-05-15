@@ -225,12 +225,17 @@ a:hover, .hover-accent:hover {
   aspect-ratio: 2 / 1;
   width: 100%;
   object-fit: cover;
-  opacity: 0.9;
+  object-position: center; /* Best default for all types of content */
   transition: var(--transition);
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: auto;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  filter: contrast(1.1) brightness(1.05) saturate(1.1); /* HD Look */
 }
 
 .card:hover .card-img-top {
-  opacity: 1;
+  transform: scale(1.05) translateZ(0);
 }
 
 .rounded-circle-img {
