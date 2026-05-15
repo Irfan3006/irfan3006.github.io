@@ -139,9 +139,9 @@
                 <p class="text-muted small flex-grow-1">${escapeHTML(excerpt)}</p>
                 <div class="d-flex align-items-center mt-3 pt-3 border-top border-secondary border-opacity-10">
                   <img src="${escapeHTML(post.author_avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author_name)}`)}" class="rounded-circle-img me-2" style="width:25px;height:25px;">
-                  <div class="small">
-                    <span class="text-white d-block fw-600">${escapeHTML(post.author_name)}</span>
-                    <span class="text-muted" style="font-size: 0.7rem;">${date}</span>
+                  <div class="small lh-1">
+                    <span class="text-white d-block fw-600 mb-1">${escapeHTML(post.author_name)}</span>
+                    <span class="text-muted" style="font-size: 0.75rem;">${date}</span>
                   </div>
                 </div>
               </div>
