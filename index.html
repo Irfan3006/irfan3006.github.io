@@ -268,7 +268,7 @@
 
         const html = posts.map(post => {
           const thumb = post.thumbnail || '/assets/img/logo.webp';
-          const date = new Date(post.created_at).toLocaleDateString();
+          const date = formatDate(post.created_at);
           const tempDiv = document.createElement('div');
           tempDiv.innerHTML = sanitizeHTML(post.content);
           const excerpt = tempDiv.textContent.substring(0, 100) + '...';

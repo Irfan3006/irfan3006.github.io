@@ -115,7 +115,7 @@
           card.setAttribute('data-aos', 'fade-up');
           
           const thumb = post.thumbnail || '/assets/img/logo.webp';
-          const date = new Date(post.created_at).toLocaleDateString();
+          const date = formatDate(post.created_at);
           
           // Simple excerpt
           const temp = document.createElement('div');

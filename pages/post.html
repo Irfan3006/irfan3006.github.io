@@ -89,7 +89,7 @@
           document.getElementById('post-title').innerText = post.title;
           document.getElementById('post-category').innerText = post.category;
           document.getElementById('category-link').href = `/pages/explore.html?category=${encodeURIComponent(post.category)}`;
-          document.getElementById('post-meta').innerText = `Oleh ${post.author_name} \u2022 ${new Date(post.created_at).toLocaleDateString()}`;
+          document.getElementById('post-meta').innerText = `Oleh ${post.author_name} \u2022 ${formatDate(post.created_at)}`;
           document.getElementById('post-body').innerHTML = sanitizeHTML(post.content);
           
           const plainContent = document.getElementById('post-body').textContent.substring(0, 160).replace(/\s+/g, ' ') + '...';

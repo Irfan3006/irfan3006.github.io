@@ -185,7 +185,7 @@
             <td class="fw-600 text-white">${safeUsername}</td>
             <td style="color: var(--paragraph); opacity: 0.8;">${safeEmail}</td>
             <td><span class="badge ${u.role === 'admin' ? 'badge-admin' : 'badge-user'} text-uppercase" style="font-size: 0.7rem; letter-spacing: 1px;">${safeRole}</span></td>
-            <td style="color: var(--paragraph); opacity: 0.6; font-size:0.85rem;">${new Date(u.created_at).toLocaleDateString()}</td>
+            <td style="color: var(--paragraph); opacity: 0.6; font-size:0.85rem;">${formatDate(u.created_at)}</td>
             <td>
               ${u.id !== user.id ? `<button class="btn btn-sm btn-link text-danger p-0" onclick="deleteUser('${escapeHTML(u.id)}')" title="Hapus Pengguna"><i class="bi bi-trash3 fs-5"></i></button>` : '<span class="badge bg-secondary bg-opacity-10 text-muted">YOU</span>'}
             </td>
@@ -210,7 +210,7 @@
             <td class="fw-600"><a href="/pages/post.html?slug=${safeSlug}" target="_blank" rel="noopener noreferrer" class="text-white text-decoration-none hover-accent">${safeTitle}</a></td>
             <td style="color: var(--paragraph);">${safeAuthor}</td>
             <td><span class="badge badge-user">${safeCategory}</span></td>
-            <td style="color: var(--paragraph); opacity: 0.6; font-size:0.85rem;">${new Date(p.created_at).toLocaleDateString()}</td>
+            <td style="color: var(--paragraph); opacity: 0.6; font-size:0.85rem;">${formatDate(p.created_at)}</td>
             <td>
               <div class="d-flex gap-2">
                 <a href="/pages/edit-post.html?id=${encodeURIComponent(p.id)}" class="btn btn-sm btn-link text-primary p-0" title="Edit"><i class="bi bi-pencil-square fs-5"></i></a>

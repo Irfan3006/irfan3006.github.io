@@ -121,7 +121,7 @@
 
       function renderTrending(posts) {
         grid.innerHTML = posts.map((post, index) => {
-          const date = new Date(post.created_at).toLocaleDateString();
+          const date = formatDate(post.created_at);
           const thumb = post.thumbnail || '/assets/img/logo.webp';
           const number = (index + 1).toString().padStart(2, '0');
           return `

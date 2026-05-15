@@ -99,7 +99,7 @@
         } else {
           grid.innerHTML = myPosts.map(post => {
             const thumb = post.thumbnail || '/assets/img/logo.webp';
-            const date = new Date(post.created_at).toLocaleDateString();
+            const date = formatDate(post.created_at);
             const safeTitle = escapeHTML(post.title);
             const safeCategory = escapeHTML(post.category);
             const safeThumb = escapeHTML(thumb);
