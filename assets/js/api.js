@@ -34,9 +34,19 @@ function escapeHTML(str) {
   return div.innerHTML;
 }
 
+function debounce(fn, delay = 300) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+}
+
 class API {
-  static async request(method, data = {}) {
-    showLoading();
+  static _pendingRequests = {};
+
+  static async request(method, data = {}, showLoader = true) {
+    if (showLoader) showLoading();
     try {
       let url = SCRIPT_URL;
       let options = { redirect: 'follow' };
@@ -73,12 +83,22 @@ class API {
       return JSON.parse(cached);
     }
 
-    const res = await this.request('GET', { action: 'get_posts' });
-    if (res.success) {
-      sessionStorage.setItem(cacheKey, JSON.stringify(res));
-      sessionStorage.setItem(cacheKey + '_time', Date.now());
+    // Deduplicate: if a request is already in-flight, reuse it
+    if (this._pendingRequests[cacheKey]) {
+      return this._pendingRequests[cacheKey];
     }
-    return res;
+
+    this._pendingRequests[cacheKey] = (async () => {
+      const res = await this.request('GET', { action: 'get_posts' });
+      if (res.success) {
+        sessionStorage.setItem(cacheKey, JSON.stringify(res));
+        sessionStorage.setItem(cacheKey + '_time', Date.now());
+      }
+      delete this._pendingRequests[cacheKey];
+      return res;
+    })();
+
+    return this._pendingRequests[cacheKey];
   }
 
   static async getUsers(forceRefresh = false) {

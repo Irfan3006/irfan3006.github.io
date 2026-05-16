@@ -358,6 +358,18 @@ footer {
   animation: pulse 1.5s infinite;
 }
 
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.2; }
+}
+
+/* Performance: GPU-accelerated transitions */
+.card,
+.btn,
+.nav-link {
+  will-change: transform;
+}
+
 /* Custom UI Tweaks */
 .post-header h1 {
   color: var(--headline);

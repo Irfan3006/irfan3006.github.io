@@ -5,17 +5,86 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile - FanBlog</title>
   <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
-  <meta name="robots" content="noindex, nofollow">
-  <meta name="description" content="Kelola profil dan postingan FanBlog Anda di Dashboard Pengguna.">
-  <meta property="og:title" content="User Profile - FanBlog">
+  <meta name="description" id="meta-description" content="Lihat profil pengguna di FanBlog.">
+  <meta property="og:title" id="og-title" content="User Profile - FanBlog">
   <meta property="og:image" content="https://irfan3006.github.io/assets/img/logo.webp">
+  <!-- Resource Hints -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://script.google.com">
+
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
   <link rel="stylesheet" href="/assets/css/style.css">
   <style>
-    .profile-header { background: linear-gradient(135deg, var(--card-bg) 0%, #312e81 100%); border-radius: var(--radius); color: white; padding: 3rem 2rem; text-align: center; margin-bottom: 2rem; position: relative; }
+    .profile-header {
+      background: linear-gradient(135deg, var(--card-bg) 0%, #312e81 100%);
+      border-radius: var(--radius);
+      color: white;
+      padding: 3rem 2rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    .profile-stats {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      margin-top: 1.5rem;
+    }
+    .profile-stats .stat-item {
+      text-align: center;
+    }
+    .profile-stats .stat-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--headline);
+      line-height: 1;
+    }
+    .profile-stats .stat-label {
+      font-size: 0.85rem;
+      color: var(--paragraph);
+      opacity: 0.7;
+      margin-top: 0.3rem;
+    }
+    .profile-bio {
+      background: var(--card-bg);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 1.5rem 2rem;
+      margin-bottom: 2rem;
+      color: var(--paragraph);
+      line-height: 1.8;
+    }
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+    }
+    .section-title h4 {
+      margin: 0;
+    }
+    .section-title .line {
+      flex: 1;
+      height: 1px;
+      background: var(--stroke);
+    }
+    .avatar-lg {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid rgba(255,255,255,0.15);
+    }
+    .member-since {
+      font-size: 0.85rem;
+      opacity: 0.6;
+      margin-top: 0.5rem;
+    }
   </style>
 </head>
 <body>
@@ -24,16 +93,34 @@
   <main class="container my-5 min-vh-80">
     <div class="row justify-content-center">
       <div class="col-lg-8">
-        <div class="profile-header shadow">
+
+        <!-- Profile Header (Always visible) -->
+        <div class="profile-header shadow" id="profile-header-section">
           <img src="" id="profile-avatar" class="avatar-lg mb-3" alt="Avatar">
           <h2 class="fw-bold mb-1" id="profile-name">Loading...</h2>
-          <p class="mb-2 opacity-75" id="profile-role">Role</p>
-          <span class="badge bg-white text-primary mt-2 px-3 py-2" id="profile-email">email@example.com</span>
+          <p class="mb-0 opacity-75" id="profile-role">Role</p>
+          <p class="member-since" id="member-since"></p>
+
+          <!-- Email: only visible for profile owner -->
+          <span class="badge bg-white text-primary mt-2 px-3 py-2 d-none" id="profile-email">email@example.com</span>
+
+          <div class="profile-stats" id="profile-stats">
+            <div class="stat-item">
+              <div class="stat-value" id="stat-posts">0</div>
+              <div class="stat-label">Posts</div>
+            </div>
+          </div>
         </div>
 
-        <div class="card shadow-sm border-0 mb-4">
+        <!-- Bio Section (Always visible) -->
+        <div class="profile-bio d-none" id="bio-section">
+          <p class="mb-0" id="profile-bio-text"></p>
+        </div>
+
+        <!-- Edit Profile Form (Owner only) -->
+        <div class="card shadow-sm border-0 mb-4 d-none" id="edit-profile-section">
           <div class="card-body p-4">
-            <h5 class="fw-bold mb-3">Edit Profile</h5>
+            <h5 class="fw-bold mb-3"><i class="bi bi-pencil-square me-2"></i>Edit Profile</h5>
             <form id="profileForm">
               <div class="mb-3">
                 <label class="form-label">Avatar URL</label>
@@ -41,15 +128,21 @@
               </div>
               <div class="mb-3">
                 <label class="form-label">Bio / About Me</label>
-                <textarea class="form-control" id="input-bio" rows="4" placeholder="Tell us about yourself..."></textarea>
+                <textarea class="form-control" id="input-bio" rows="4" placeholder="Tell us about yourself..." maxlength="500"></textarea>
+                <div class="form-text"><span id="bio-char-count">0</span>/500 karakter</div>
               </div>
               <button type="submit" class="btn btn-primary px-4">Save Changes</button>
             </form>
           </div>
         </div>
 
-        <h4 class="fw-bold mb-4 mt-5">My Posts</h4>
-        <div id="my-posts-grid" class="row g-4"></div>
+        <!-- Posts Section (Always visible) -->
+        <div class="section-title mt-5">
+          <h4 class="fw-bold" id="posts-section-title">Posts</h4>
+          <div class="line"></div>
+        </div>
+        <div id="user-posts-grid" class="row g-4"></div>
+
       </div>
     </div>
   </main>
@@ -61,87 +154,221 @@
   <script src="/assets/js/app.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
-      Auth.requireLogin();
-      let user = Auth.getSession();
+      const urlParams = new URLSearchParams(window.location.search);
+      const profileUserId = urlParams.get('user');
+      const currentUser = Auth.getSession();
 
-      document.getElementById('profile-avatar').src = user.avatar;
-      document.getElementById('profile-name').innerText = user.username;
-      document.getElementById('profile-role').innerText = user.role.toUpperCase();
-      document.getElementById('profile-email').innerText = user.email;
-      document.getElementById('input-avatar').value = user.avatar;
-      document.getElementById('input-bio').value = user.bio || '';
+      let isOwner = false;
+      let targetUserId = null;
 
-      document.getElementById('profileForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const avatar = document.getElementById('input-avatar').value;
-        const bio = document.getElementById('input-bio').value;
+      // Determine which profile to show
+      if (profileUserId) {
+        // Public profile: viewing someone's profile via ?user=ID
+        targetUserId = profileUserId;
+        isOwner = currentUser && currentUser.id === profileUserId;
+      } else if (currentUser) {
+        // No ?user param but logged in: show own profile
+        targetUserId = currentUser.id;
+        isOwner = true;
+      } else {
+        // Not logged in and no ?user param: redirect to login
+        window.location.href = '/pages/login.html';
+        return;
+      }
 
-        const res = await API.updateProfile({ id: user.id, avatar: avatar, bio: bio });
-        if (res.success) {
-          showToast('success', 'Profile Updated');
-          user.avatar = avatar;
-          user.bio = bio;
-          Auth.setSession(user);
-          document.getElementById('profile-avatar').src = avatar;
-          updateNavbar();
-        } else {
-          showToast('error', 'Update Failed', res.message);
-        }
-      });
-
+      // Fetch user data from posts (author info is embedded in posts)
       const postsRes = await API.getPosts();
+      let profileData = null;
+      let userPosts = [];
+
       if (postsRes.success) {
-        const myPosts = postsRes.data.filter(p => p.author_id === user.id);
-        const grid = document.getElementById('my-posts-grid');
-        
-        if (myPosts.length === 0) {
-          grid.innerHTML = '<div class="col-12 text-center text-muted py-4">You haven\'t written any posts yet.</div>';
-        } else {
-          grid.innerHTML = myPosts.map(post => {
-            const thumb = post.thumbnail || '/assets/img/logo.webp';
-            const date = formatDate(post.created_at);
-            const safeTitle = escapeHTML(post.title);
-            const safeCategory = escapeHTML(post.category);
-            const safeThumb = escapeHTML(thumb);
-            return `
-              <div class="col-md-6 mb-4">
-                <div class="card h-100 border-0 shadow-sm">
-                  <img src="${safeThumb}" class="card-img-top" style="height: 150px;" alt="${safeTitle}">
-                  <div class="card-body">
-                    <span class="badge bg-light text-dark mb-2">${safeCategory}</span>
-                    <h6 class="card-title fw-bold"><a href="/pages/post.html?slug=${encodeURIComponent(post.slug)}">${safeTitle}</a></h6>
-                    <p class="text-muted small">${date}</p>
-                  </div>
-                  <div class="card-footer bg-white border-top-0 d-flex justify-content-between pb-3">
-                    <a href="/pages/edit-post.html?id=${encodeURIComponent(post.id)}" class="btn btn-sm btn-outline-primary">Edit</a>
-                    <button class="btn btn-sm btn-outline-danger" onclick="deleteMyPost('${escapeHTML(post.id)}')">Delete</button>
-                  </div>
-                </div>
-              </div>
-            `;
-          }).join('');
+        // Find posts by this user
+        userPosts = postsRes.data.filter(p => p.author_id === targetUserId);
+
+        // Extract profile info from any of the user's posts
+        if (userPosts.length > 0) {
+          const firstPost = userPosts[0];
+          profileData = {
+            id: firstPost.author_id,
+            username: firstPost.author_name,
+            avatar: firstPost.author_avatar,
+            bio: firstPost.author_bio
+          };
         }
       }
 
-      window.deleteMyPost = async (id) => {
-        const result = await Swal.fire({
-          title: 'Are you sure?',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#dc3545',
-          confirmButtonText: 'Yes, delete it!'
+      // If owner and we have session data, use that (more complete/fresh)
+      if (isOwner && currentUser) {
+        profileData = {
+          id: currentUser.id,
+          username: currentUser.username,
+          avatar: currentUser.avatar,
+          bio: currentUser.bio,
+          email: currentUser.email,
+          role: currentUser.role,
+          created_at: currentUser.created_at
+        };
+      }
+
+      // If we still have no profile data, show error
+      if (!profileData) {
+        document.getElementById('profile-name').innerText = 'User Not Found';
+        document.getElementById('profile-role').innerText = '';
+        document.getElementById('profile-avatar').src = `https://ui-avatars.com/api/?name=?&size=128&background=random`;
+        document.getElementById('user-posts-grid').innerHTML = '<div class="col-12 text-center text-muted py-4">Pengguna tidak ditemukan atau belum memiliki postingan.</div>';
+        return;
+      }
+
+      // --- Render Profile ---
+      const safeUsername = escapeHTML(profileData.username);
+      const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(profileData.username)}&size=128`;
+
+      document.getElementById('profile-avatar').src = profileData.avatar || defaultAvatar;
+      document.getElementById('profile-avatar').onerror = function() { this.src = defaultAvatar; };
+      document.getElementById('profile-name').innerText = safeUsername;
+      document.getElementById('profile-role').innerText = (profileData.role || 'user').toUpperCase();
+
+      // Update page title & meta
+      document.title = `${safeUsername} - FanBlog`;
+      document.getElementById('meta-description').content = `Profil ${safeUsername} di FanBlog.`;
+      document.getElementById('og-title').content = `${safeUsername} - FanBlog`;
+
+      // Stats
+      document.getElementById('stat-posts').innerText = userPosts.length;
+
+      // Member since (only if available)
+      if (profileData.created_at) {
+        document.getElementById('member-since').innerText = `Bergabung sejak ${formatDate(profileData.created_at)}`;
+      }
+
+      // Bio (public - sanitized)
+      if (profileData.bio && profileData.bio.trim() !== '') {
+        document.getElementById('bio-section').classList.remove('d-none');
+        document.getElementById('profile-bio-text').innerText = profileData.bio;
+      }
+
+      // --- Owner-Only Sections ---
+      if (isOwner && currentUser) {
+        // Show email (owner only)
+        const emailEl = document.getElementById('profile-email');
+        emailEl.innerText = escapeHTML(currentUser.email);
+        emailEl.classList.remove('d-none');
+
+        // Show edit form
+        document.getElementById('edit-profile-section').classList.remove('d-none');
+        document.getElementById('input-avatar').value = currentUser.avatar || '';
+        document.getElementById('input-bio').value = currentUser.bio || '';
+        document.getElementById('bio-char-count').innerText = (currentUser.bio || '').length;
+
+        // Bio character counter
+        document.getElementById('input-bio').addEventListener('input', function() {
+          document.getElementById('bio-char-count').innerText = this.value.length;
         });
 
-        if (result.isConfirmed) {
-          const res = await API.deletePost(id, user.id);
+        // Edit profile form submission
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const avatar = document.getElementById('input-avatar').value;
+          const bio = document.getElementById('input-bio').value;
+
+          const res = await API.updateProfile({ id: currentUser.id, avatar: avatar, bio: bio });
           if (res.success) {
-            showToast('success', 'Post deleted');
-            setTimeout(() => { window.location.reload(); }, 1000);
+            showToast('success', 'Profile Updated');
+            currentUser.avatar = avatar;
+            currentUser.bio = bio;
+            Auth.setSession(currentUser);
+            document.getElementById('profile-avatar').src = avatar || defaultAvatar;
+            if (bio && bio.trim() !== '') {
+              document.getElementById('bio-section').classList.remove('d-none');
+              document.getElementById('profile-bio-text').innerText = bio;
+            }
+            updateNavbar();
           } else {
-            showToast('error', 'Error', res.message);
+            showToast('error', 'Update Failed', res.message);
           }
-        }
-      };
+        });
+
+        // Posts section title for owner
+        document.getElementById('posts-section-title').innerText = 'My Posts';
+      } else {
+        // Public visitor: section title with username
+        document.getElementById('posts-section-title').innerText = `Postingan ${safeUsername}`;
+        // Remove noindex for public profiles
+        const robotsMeta = document.querySelector('meta[name="robots"]');
+        if (robotsMeta) robotsMeta.remove();
+      }
+
+      // --- Render Posts ---
+      const grid = document.getElementById('user-posts-grid');
+
+      if (userPosts.length === 0) {
+        grid.innerHTML = `<div class="col-12 text-center text-muted py-4">
+          ${isOwner ? 'Anda belum menulis postingan. <a href="/pages/create-post.html" class="text-primary">Tulis sekarang!</a>' : 'Pengguna ini belum memiliki postingan.'}
+        </div>`;
+      } else {
+        grid.innerHTML = userPosts.map(post => {
+          const thumb = post.thumbnail || '/assets/img/logo.webp';
+          const date = formatDate(post.created_at);
+          const safeTitle = escapeHTML(post.title);
+          const safeCategory = escapeHTML(post.category);
+          const safeThumb = escapeHTML(thumb);
+
+          // Owner gets edit/delete, visitors get read-only cards
+          const ownerActions = isOwner ? `
+            <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between pb-3">
+              <a href="/pages/edit-post.html?id=${encodeURIComponent(post.id)}" class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-pencil me-1"></i>Edit
+              </a>
+              <button class="btn btn-sm btn-outline-danger" onclick="deleteMyPost('${escapeHTML(post.id)}')">
+                <i class="bi bi-trash me-1"></i>Delete
+              </button>
+            </div>
+          ` : '';
+
+          return `
+            <div class="col-md-6 mb-4">
+              <div class="card h-100 border-0 shadow-sm">
+                <a href="/pages/post.html?slug=${encodeURIComponent(post.slug)}">
+                  <img src="${safeThumb}" class="card-img-top" style="height: 180px;" alt="${safeTitle}" onerror="this.src='/assets/img/logo.webp'">
+                </a>
+                <div class="card-body">
+                  <span class="badge bg-primary bg-opacity-10 text-primary mb-2">${safeCategory}</span>
+                  <h6 class="card-title fw-bold">
+                    <a href="/pages/post.html?slug=${encodeURIComponent(post.slug)}" class="text-decoration-none">${safeTitle}</a>
+                  </h6>
+                  <p class="text-muted small mb-0"><i class="bi bi-calendar3 me-1"></i>${date}</p>
+                </div>
+                ${ownerActions}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Delete post function (owner only)
+      if (isOwner) {
+        window.deleteMyPost = async (id) => {
+          const result = await Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: 'Postingan yang dihapus tidak dapat dikembalikan!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+          });
+
+          if (result.isConfirmed) {
+            const res = await API.deletePost(id, currentUser.id);
+            if (res.success) {
+              showToast('success', 'Postingan dihapus');
+              setTimeout(() => { window.location.reload(); }, 1000);
+            } else {
+              showToast('error', 'Error', res.message);
+            }
+          }
+        };
+      }
     });
   </script>
 </body>

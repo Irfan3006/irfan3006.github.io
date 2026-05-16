@@ -24,73 +24,346 @@
   <script type="application/ld+json" id="structured-data"></script>
   <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=698357388ea334cc0e5b7c25&product=sop' async='async'></script>
   
+  <!-- Resource Hints -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://script.google.com">
+  <link rel="dns-prefetch" href="https://ui-avatars.com">
+
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
   
   <link rel="stylesheet" href="/assets/css/style.css">
   <style>
-    .post-header { max-width: 800px; margin: 0 auto; text-align: center; }
-    .post-content { max-width: 800px; margin: 0 auto; font-size: 1.1rem; line-height: 1.8; color: var(--paragraph); }
+    :root {
+      --reading-font-size: 1.15rem;
+      --reading-line-height: 1.85;
+    }
+    
+    /* Reading Progress Bar */
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 2000;
+    }
+    .progress-bar {
+      height: 3px;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.1s ease;
+      opacity: 0.8;
+    }
+
+    .post-header { max-width: 850px; margin: 0 auto; text-align: center; padding: 2rem 0; }
+    
+    .post-content { 
+      max-width: 800px; 
+      margin: 0 auto; 
+      font-size: var(--reading-font-size); 
+      line-height: var(--reading-line-height); 
+      color: var(--paragraph);
+      font-weight: 400;
+    }
+    
+    .post-content p { margin-bottom: 1.8rem; }
+    
+    .post-content h2 { font-size: 2rem; margin-top: 3rem; margin-bottom: 1.5rem; }
+    .post-content h3 { font-size: 1.6rem; margin-top: 2.5rem; margin-bottom: 1.2rem; }
+    
     .post-content img { 
       max-width: 100%; 
       height: auto; 
-      border-radius: 8px; 
-      margin: 1.5rem 0; 
-      image-rendering: -webkit-optimize-contrast;
-      image-rendering: auto;
-      backface-visibility: hidden;
-      transform: translateZ(0);
+      border-radius: 16px; 
+      margin: 2.5rem 0; 
+      box-shadow: var(--shadow-soft);
+      display: block;
     }
+
+    .post-content blockquote {
+      border-left: 4px solid var(--accent);
+      padding: 1rem 2rem;
+      margin: 2rem 0;
+      background: rgba(79, 195, 247, 0.05);
+      border-radius: 0 16px 16px 0;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--headline);
+    }
+
+    .post-content code {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.9em;
+      color: var(--accent);
+    }
+
+    .post-content pre {
+      background: var(--stroke);
+      padding: 1.5rem;
+      border-radius: 16px;
+      overflow-x: auto;
+      margin: 2rem 0;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .post-content pre code {
+      background: transparent;
+      padding: 0;
+      color: var(--headline);
+    }
+
+    .post-content ul, .post-content ol {
+      margin-bottom: 1.8rem;
+      padding-left: 1.5rem;
+    }
+
+    .post-content li {
+      margin-bottom: 0.8rem;
+    }
+
     .post-thumbnail { 
       width: 100%; 
-      max-height: 500px; 
+      max-height: 550px; 
       height: auto; 
-      aspect-ratio: 2 / 1; 
+      aspect-ratio: 16 / 9; 
       object-fit: cover; 
       object-position: center; 
-      border-radius: var(--radius); 
-      margin-bottom: 2rem; 
-      image-rendering: -webkit-optimize-contrast;
-      image-rendering: auto;
-      backface-visibility: hidden;
-      transform: translateZ(0);
-      filter: contrast(1.1) brightness(1.05) saturate(1.05);
+      border-radius: 24px; 
+      margin-bottom: 3rem; 
+      filter: contrast(1.05) brightness(1.02);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     }
-    .author-box { background: var(--card-bg); border-radius: var(--radius); padding: 1.5rem; display: flex; align-items: center; gap: 1.5rem; margin-top: 3rem; border: 1px solid var(--stroke); }
+
+    .author-box { 
+      background: var(--card-bg); 
+      border-radius: 24px; 
+      padding: 2rem; 
+      display: flex; 
+      align-items: center; 
+      gap: 1.5rem; 
+      margin-top: 5rem; 
+      border: 1px solid var(--stroke);
+      transition: var(--transition);
+    }
+    
+    .author-box:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Scroll to Top */
+    #btn-back-to-top {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      display: none;
+      z-index: 1000;
+      width: 45px;
+      height: 45px;
+      border-radius: 14px;
+      background: rgba(27, 32, 56, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: var(--accent);
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow-soft);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 0;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    
+    #btn-back-to-top:hover {
+      transform: translateY(-5px);
+      background: var(--accent);
+      color: var(--background);
+      border-color: var(--accent);
+      box-shadow: 0 10px 20px rgba(79, 195, 247, 0.3);
+    }
+
+    .breadcrumb-item a {
+      color: var(--paragraph);
+      font-size: 0.9rem;
+      text-decoration: none;
+      opacity: 0.8;
+    }
+    .breadcrumb-item.active {
+      color: var(--accent);
+      font-size: 0.9rem;
+    }
+
+    /* Content reveal animation */
+    #post-body {
+      animation: fadeIn 0.8s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .post-content { font-size: 1.1rem; }
+      .post-header { padding: 1rem 0; }
+      .post-header h1 { font-size: 1.8rem; }
+      .author-box { flex-direction: column; text-align: center; padding: 1.5rem; }
+      .author-box .d-flex {
+        justify-content: center !important;
+      }
+      
+      .post-meta-wrapper {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+        font-size: 0.9rem;
+      }
+      .post-meta-wrapper .separator {
+        display: none !important;
+      }
+      .breadcrumb {
+        margin-bottom: 1rem !important;
+      }
+    }
+
+    /* Recommendation Section Styles */
+    .recommendation-section {
+      margin-top: 6rem;
+      border-top: 1px solid var(--stroke);
+      padding-top: 4rem;
+    }
+    .recommendation-title {
+      font-size: 1.8rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .recommendation-title i {
+      color: var(--accent);
+    }
+    .rec-card {
+      height: 100%;
+      transition: var(--transition);
+      border: 1px solid transparent !important;
+    }
+    .rec-card:hover {
+      border-color: var(--accent) !important;
+      transform: translateY(-8px);
+    }
+    .rec-img-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px 16px 0 0;
+    }
+    .rec-img {
+      height: 180px;
+      width: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .rec-card:hover .rec-img {
+      transform: scale(1.1);
+    }
+    .rec-category {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: rgba(18, 22, 41, 0.7);
+      backdrop-filter: blur(5px);
+      padding: 0.3rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: 600;
+      z-index: 2; /* Ensure it stays above the stretched-link */
+    }
   </style>
 </head>
 <body>
 
+  <div class="progress-container">
+    <div class="progress-bar" id="myBar"></div>
+  </div>
+
   <div id="navbar-placeholder"></div>
 
   <main class="container my-5 min-vh-80" id="post-container" style="display: none;">
+    <nav aria-label="breadcrumb" style="max-width: 800px; margin: 0 auto 2rem;">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/"><i class="bi bi-house"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="/pages/explore.html">Blog</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Post</li>
+      </ol>
+    </nav>
+
     <div id="post-actions" class="text-end mb-3 d-flex justify-content-end gap-2" style="max-width: 800px; margin: 0 auto;"></div>
 
     <div class="post-header mb-4">
       <a href="#" id="category-link" class="text-decoration-none">
         <span class="badge bg-primary bg-opacity-10 text-primary mb-3 px-3 py-2 fs-6" id="post-category">Category</span>
       </a>
-      <h1 class="fw-bold display-5 mb-3" id="post-title">Loading...</h1>
-      <p class="text-muted mb-4" id="post-meta">By Author • Date</p>
+      <h1 class="fw-bold display-4 mb-3" id="post-title">Loading...</h1>
+      <div class="d-flex align-items-center justify-content-center gap-3 text-muted mb-4 post-meta-wrapper">
+        <span id="post-author-top">By Author</span>
+        <span class="separator">&bull;</span>
+        <span id="post-date">Date</span>
+        <span class="separator">&bull;</span>
+        <span id="reading-time"><i class="bi bi-clock me-1"></i> 5 mnt baca</span>
+      </div>
       <div class="sharethis-inline-share-buttons mb-4"></div>
     </div>
 
-    <div style="max-width: 800px; margin: 0 auto;">
-      <img src="" id="post-thumbnail" class="post-thumbnail shadow-sm d-none" alt="Thumbnail">
+    <div style="max-width: 850px; margin: 0 auto;">
+      <img src="" id="post-thumbnail" class="post-thumbnail d-none" alt="Thumbnail">
     </div>
 
-    <div class="post-content" id="post-body"></div>
+    <article class="post-content" id="post-body"></article>
 
     <div class="author-box mx-auto" style="max-width: 800px;">
-      <img src="" id="author-avatar" class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover;" alt="Author">
+      <img src="" id="author-avatar" class="rounded-circle shadow-sm" style="width: 100px; height: 100px; object-fit: cover; border: 3px solid var(--stroke);" alt="Author">
       <div>
-        <h5 class="fw-bold mb-1" id="author-name">Author Name</h5>
-        <p class="text-muted mb-0" style="font-size: 0.95rem;" id="author-bio">Konten Kreator di FanBlog</p>
+        <h5 class="fw-bold mb-1 fs-4" id="author-name">Author Name</h5>
+        <p class="text-muted mb-2" style="font-size: 1rem;" id="author-bio">Konten Kreator di FanBlog</p>
+        <div class="d-flex gap-2">
+          <a href="#" id="author-profile-link" class="btn btn-sm btn-outline-primary rounded-pill px-3">Lihat Profil</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendation Section -->
+    <div class="recommendation-section">
+      <h3 class="recommendation-title fw-bold">
+        <i class="bi bi-stars"></i> Rekomendasi Untuk Kamu
+      </h3>
+      <div class="row g-4" id="recommendations-container">
+        <!-- Skeleton Loaders -->
+        <div class="col-md-4">
+          <div class="card rec-card skeleton" style="height: 300px;"></div>
+        </div>
+        <div class="col-md-4">
+          <div class="card rec-card skeleton" style="height: 300px;"></div>
+        </div>
+        <div class="col-md-4">
+          <div class="card rec-card skeleton" style="height: 300px;"></div>
+        </div>
       </div>
     </div>
   </main>
+
+  <button type="button" id="btn-back-to-top">
+    <i class="bi bi-arrow-up"></i>
+  </button>
 
   <div id="footer-placeholder"></div>
 
@@ -112,10 +385,21 @@
           document.getElementById('post-title').innerText = post.title;
           document.getElementById('post-category').innerText = post.category;
           document.getElementById('category-link').href = `/pages/explore.html?category=${encodeURIComponent(post.category)}`;
-          document.getElementById('post-meta').innerText = `Oleh ${post.author_name} \u2022 ${formatDate(post.created_at)}`;
-          document.getElementById('post-body').innerHTML = sanitizeHTML(post.content);
           
-          const plainContent = document.getElementById('post-body').textContent.substring(0, 160).replace(/\s+/g, ' ') + '...';
+          document.getElementById('post-author-top').innerText = `Oleh ${post.author_name}`;
+          document.getElementById('post-date').innerText = formatDate(post.created_at);
+          
+          const sanitizedContent = sanitizeHTML(post.content);
+          document.getElementById('post-body').innerHTML = sanitizedContent;
+          
+          // Calculate Reading Time
+          const text = document.getElementById('post-body').innerText;
+          const wpm = 225; // Words per minute
+          const words = text.trim().split(/\s+/).length;
+          const time = Math.ceil(words / wpm);
+          document.getElementById('reading-time').innerHTML = `<i class="bi bi-clock me-1"></i> ${time} mnt baca`;
+
+          const plainContent = text.substring(0, 160).replace(/\s+/g, ' ') + '...';
           document.title = `${post.title} - FanBlog`;
           document.getElementById('meta-description').content = plainContent;
           document.getElementById('og-title').content = post.title;
@@ -159,6 +443,7 @@
           document.getElementById('author-name').innerText = post.author_name;
           document.getElementById('author-avatar').src = post.author_avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author_name)}&size=128`;
           document.getElementById('author-bio').innerText = post.author_bio || 'Konten Kreator di FanBlog';
+          document.getElementById('author-profile-link').href = `/pages/profile.html?user=${post.author_id}`;
 
           if (user && (user.id === post.author_id || user.role === 'admin')) {
             document.getElementById('post-actions').innerHTML += `
@@ -172,10 +457,92 @@
           if (window.__sharethis__ && typeof window.__sharethis__.initialize === 'function') {
             window.__sharethis__.initialize();
           }
+
+          // Load Recommendations
+          loadRecommendations(res.data, post);
         } else {
           showToast('error', 'Error', 'Post not found');
         }
       }
+
+      async function loadRecommendations(allPosts, currentPost) {
+        const container = document.getElementById('recommendations-container');
+        
+        // Algorithm:
+        // 1. Exclude current post
+        // 2. Prioritize same category
+        // 3. Shuffle results
+        // 4. Fill with random if not enough
+        
+        let related = allPosts.filter(p => p.id !== currentPost.id && p.category === currentPost.category);
+        let others = allPosts.filter(p => p.id !== currentPost.id && p.category !== currentPost.category);
+        
+        // Shuffle helper
+        const shuffle = (array) => array.sort(() => Math.random() - 0.5);
+        
+        shuffle(related);
+        shuffle(others);
+        
+        let recommended = [...related, ...others].slice(0, 3);
+        
+        if (recommended.length === 0) {
+          container.innerHTML = '<div class="col-12 text-center text-muted">Belum ada rekomendasi artikel lainnya.</div>';
+          return;
+        }
+
+        container.innerHTML = recommended.map(p => {
+          const thumb = p.thumbnail || '/assets/img/logo.webp';
+          const safeTitle = escapeHTML(p.title);
+          const safeCategory = escapeHTML(p.category);
+          
+          return `
+            <div class="col-md-4" data-aos="fade-up">
+              <div class="card rec-card shadow-sm border-0">
+                <div class="rec-img-wrapper">
+                  <span class="rec-category">${safeCategory}</span>
+                  <img src="${thumb}" class="rec-img" alt="${safeTitle}" onerror="this.src='/assets/img/logo.webp'">
+                </div>
+                <div class="card-body p-3">
+                  <h6 class="card-title fw-bold mb-2">
+                    <a href="/pages/post.html?slug=${encodeURIComponent(p.slug)}" class="text-decoration-none text-white hover-accent stretched-link">
+                      ${safeTitle.length > 60 ? safeTitle.substring(0, 60) + '...' : safeTitle}
+                    </a>
+                  </h6>
+                  <div class="d-flex align-items-center gap-2 text-muted" style="font-size: 0.8rem;">
+                    <span>${p.author_name}</span>
+                    <span>&bull;</span>
+                    <span>${formatDate(p.created_at).split(',')[1].split('-')[0].trim()}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Reading Progress Logic
+      window.onscroll = function() { scrollFunction() };
+
+      function scrollFunction() {
+        // Progress Bar
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("myBar").style.width = scrolled + "%";
+
+        // Scroll to Top Button
+        const mybutton = document.getElementById("btn-back-to-top");
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+          mybutton.style.display = "block";
+        } else {
+          mybutton.style.display = "none";
+        }
+      }
+
+      // Scroll to Top Click
+      document.getElementById("btn-back-to-top").addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
 
       window.deletePost = async (id) => {
         const result = await Swal.fire({
