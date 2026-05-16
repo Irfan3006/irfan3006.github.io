@@ -175,14 +175,33 @@ class API {
   }
 }
 
+let _loadingCount = 0;
+
 function showLoading() {
+  _loadingCount++;
   const loader = document.getElementById('global-loader');
-  if (loader) loader.classList.add('active');
+  if (loader) {
+    loader.classList.remove('done');
+    loader.classList.add('active');
+  }
 }
 
 function hideLoading() {
+  _loadingCount = Math.max(0, _loadingCount - 1);
+  if (_loadingCount > 0) return; // Still has pending requests
+  
   const loader = document.getElementById('global-loader');
-  if (loader) loader.classList.remove('active');
+  if (loader) {
+    loader.classList.remove('active');
+    loader.classList.add('done');
+    // Reset after fade-out completes
+    setTimeout(() => {
+      if (!loader.classList.contains('active')) {
+        loader.classList.remove('done');
+        loader.style.width = '0%';
+      }
+    }, 600);
+  }
 }
 
 function showToast(icon, title, text = '') {

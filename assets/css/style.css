@@ -419,24 +419,23 @@ footer {
 /* SimpleMDE Dark Mode & Sticky Toolbar */
 .editor-container .card,
 .editor-container .card-body {
-  overflow: visible !important; /* Required for sticky children to work */
+  overflow: visible !important; 
 }
 
 .editor-toolbar {
-  background: #1b2038 !important; /* Force solid background to prevent bleed-through */
+  background: #1b2038 !important; 
   border: 1px solid var(--stroke) !important;
   border-bottom: 2px solid var(--accent) !important;
   opacity: 1 !important;
   position: -webkit-sticky !important;
   position: sticky !important;
-  top: 71px !important; /* Tighten the gap with the navbar */
-  z-index: 1025 !important; /* Elevated above editor content */
+  top: 71px !important; 
+  z-index: 1025 !important;
   border-radius: 12px 12px 0 0 !important;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
   margin-top: 0;
 }
 
-/* Ensure editor content doesn't overlap the sticky toolbar */
 .CodeMirror {
   background: var(--card-bg) !important;
   color: var(--paragraph) !important;
@@ -509,7 +508,58 @@ select option {
   color: var(--paragraph);
 }
 
-/* Loading Overlay */
+/* Top Loading Bar (NProgress-style) */
+.top-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), #81D4FA, var(--accent));
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+  z-index: 99999;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(79, 195, 247, 0.4);
+  pointer-events: none;
+}
+
+.top-loader.active {
+  animation: shimmer 1.5s linear infinite, loadProgress 2s ease-out forwards;
+}
+
+.top-loader.done {
+  width: 100% !important;
+  opacity: 0;
+  transition: width 0.2s ease, opacity 0.4s ease 0.2s;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes loadProgress {
+  0% { width: 0%; }
+  20% { width: 30%; }
+  50% { width: 60%; }
+  80% { width: 85%; }
+  100% { width: 92%; }
+}
+
+/* Content Fade-In */
+.content-loading {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.content-loaded {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Legacy overlay (hidden by default, used as fallback) */
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -523,9 +573,6 @@ select option {
   display: none;
   justify-content: center;
   align-items: center;
-  background: rgba(18, 22, 41, 0.8);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   transition: var(--transition);
 }
 

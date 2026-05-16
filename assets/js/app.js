@@ -209,13 +209,7 @@ function renderFooter() {
 }
 
 function renderLoader() {
-  return `
-  <div class="loading-overlay" id="global-loader">
-    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-  </div>
-  `;
+  return `<div class="top-loader" id="global-loader"></div>`;
 }
 
 function formatDate(dateString) {
