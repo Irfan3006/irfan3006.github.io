@@ -13,6 +13,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="https://script.google.com">
+  <link rel="dns-prefetch" href="https://i.imgur.com">
+  <link rel="dns-prefetch" href="https://lh3.googleusercontent.com">
+  <link rel="dns-prefetch" href="https://images.unsplash.com">
 
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -307,11 +310,10 @@
         </div>`;
       } else {
         grid.innerHTML = userPosts.map(post => {
-          const thumb = post.thumbnail || '/assets/img/logo.webp';
+          const thumb = escapeHTML(post.thumbnail || '/assets/img/logo.webp');
           const date = formatDate(post.created_at);
           const safeTitle = escapeHTML(post.title);
           const safeCategory = escapeHTML(post.category);
-          const safeThumb = escapeHTML(thumb);
 
           // Owner gets edit/delete, visitors get read-only cards
           const ownerActions = isOwner ? `
@@ -329,7 +331,7 @@
             <div class="col-md-6 mb-4">
               <div class="card h-100 border-0 shadow-sm">
                 <a href="/pages/post.html?slug=${encodeURIComponent(post.slug)}">
-                  <img src="${safeThumb}" class="card-img-top" style="height: 180px;" alt="${safeTitle}" onerror="this.src='/assets/img/logo.webp'">
+                  ${ProgressiveImage.cardThumbnail(thumb, safeTitle, '/assets/img/logo.webp', '', 'height:180px;')}
                 </a>
                 <div class="card-body">
                   <span class="badge bg-primary bg-opacity-10 text-primary mb-2">${safeCategory}</span>
@@ -343,6 +345,8 @@
             </div>
           `;
         }).join('');
+        // Activate progressive image loading
+        ProgressiveImage.observe();
       }
 
       // Delete post function (owner only)

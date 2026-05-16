@@ -252,4 +252,124 @@ document.addEventListener('DOMContentLoaded', () => {
   window.gtag = gtag;
   gtag('js', new Date());
   gtag('config', gaId);
+
+  ProgressiveImage.observe();
 });
+
+
+class ProgressiveImage {
+  static _observer = null;
+  static _observed = new WeakSet();
+
+  static observe() {
+    if (!this._observer) {
+      this._observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const wrapper = entry.target;
+            const img = wrapper.querySelector('img');
+            if (img) this._loadImage(wrapper, img);
+            this._observer.unobserve(wrapper);
+          }
+        });
+      }, {
+        rootMargin: '200px 0px',
+        threshold: 0.01
+      });
+    }
+
+
+    document.querySelectorAll('.img-progressive').forEach(wrapper => {
+      if (!this._observed.has(wrapper)) {
+        this._observed.add(wrapper);
+
+        const img = wrapper.querySelector('img');
+        if (!img) return;
+
+
+        if (img.complete && img.naturalWidth > 0) {
+          wrapper.classList.add('loaded');
+        } else {
+          this._observer.observe(wrapper);
+        }
+      }
+    });
+  }
+
+  static _loadImage(wrapper, img) {
+    const onLoad = () => {
+      wrapper.classList.add('loaded');
+      wrapper.classList.remove('error');
+      cleanup();
+    };
+
+    const onError = () => {
+      const fallback = img.dataset.fallback;
+      if (fallback && img.src !== fallback) {
+        img.src = fallback;
+        return;
+      }
+      wrapper.classList.add('error', 'loaded');
+      cleanup();
+    };
+
+    const cleanup = () => {
+      img.removeEventListener('load', onLoad);
+      img.removeEventListener('error', onError);
+    };
+
+    img.addEventListener('load', onLoad);
+    img.addEventListener('error', onError);
+
+
+    if (img.complete) {
+      if (img.naturalWidth > 0) {
+        onLoad();
+      } else {
+        onError();
+      }
+    }
+  }
+
+
+  static cardThumbnail(src, alt = '', fallback = '/assets/img/logo.webp', extraClass = '', extraStyle = '') {
+    return `
+      <div class="img-progressive">
+        <img src="${src}" 
+             class="card-img-top ${extraClass}" 
+             alt="${alt}" 
+             loading="lazy"
+             data-fallback="${fallback}"
+             ${extraStyle ? `style="${extraStyle}"` : ''}
+             referrerpolicy="no-referrer">
+      </div>
+    `;
+  }
+
+
+  static heroThumbnail(src, alt = '', fallback = '/assets/img/logo.webp') {
+    return `
+      <div class="img-progressive post-thumb-wrapper">
+        <img src="${src}" 
+             class="post-thumbnail" 
+             alt="${alt}"
+             data-fallback="${fallback}"
+             referrerpolicy="no-referrer">
+      </div>
+    `;
+  }
+
+
+  static inlineThumbnail(src, alt = '', size = '85px', extraClass = '', fallback = '/assets/img/logo.webp') {
+    return `
+      <div class="img-progressive ${extraClass}" style="width:${size};height:${size};flex-shrink:0;">
+        <img src="${src}" 
+             alt="${alt}" 
+             loading="lazy"
+             data-fallback="${fallback}"
+             referrerpolicy="no-referrer"
+             style="width:100%;height:100%;object-fit:cover;">
+      </div>
+    `;
+  }
+}

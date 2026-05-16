@@ -29,6 +29,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="https://script.google.com">
+  <link rel="dns-prefetch" href="https://i.imgur.com">
+  <link rel="dns-prefetch" href="https://lh3.googleusercontent.com">
+  <link rel="dns-prefetch" href="https://images.unsplash.com">
 
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -81,7 +84,7 @@
     </div>
 
     <div class="row g-5" id="trending-list">
-      <!-- Injected via JS -->
+
     </div>
   </main>
 
@@ -107,7 +110,7 @@
         let allPosts = res.data;
         let trendingPosts = [];
 
-        // Masukkan postingan prioritas sesuai urutan
+
         prioritySlugs.forEach(slug => {
           const post = allPosts.find(p => p.slug === slug);
           if (post) {
@@ -116,10 +119,10 @@
           }
         });
 
-        // Acak sisa postingan lainnya
+
         const shuffled = allPosts.sort(() => 0.5 - Math.random());
         
-        // Gabungkan dan ambil 10 besar
+
         trendingPosts = [...trendingPosts, ...shuffled].slice(0, 10);
         
         renderTrending(trendingPosts);
@@ -128,7 +131,7 @@
       function renderTrending(posts) {
         grid.innerHTML = posts.map((post, index) => {
           const date = formatDate(post.created_at);
-          const thumb = post.thumbnail || '/assets/img/logo.webp';
+          const thumb = escapeHTML(post.thumbnail || '/assets/img/logo.webp');
           const number = (index + 1).toString().padStart(2, '0');
           return `
             <div class="col-md-6 mb-4" data-aos="fade-up" data-aos-delay="${index * 50}">
@@ -137,7 +140,7 @@
                 <div class="card-body p-0 d-flex gap-3 align-items-center">
                   <div class="flex-grow-1">
                     <div class="d-flex align-items-center gap-2 mb-2">
-                      <img src="${escapeHTML(post.author_avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author_name)}`)}" class="rounded-circle-img" style="width:24px;height:24px;">
+                      <img src="${escapeHTML(post.author_avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author_name)}`)}" class="rounded-circle-img" style="width:24px;height:24px;" referrerpolicy="no-referrer">
                       <span class="text-white small fw-bold">${escapeHTML(post.author_name)}</span>
                       <span class="text-muted small">in</span>
                       <a href="/pages/explore.html?category=${encodeURIComponent(post.category)}" class="text-primary small fw-bold text-decoration-none hover-accent">${escapeHTML(post.category)}</a>
@@ -154,13 +157,15 @@
                     </div>
                   </div>
                   <div class="flex-shrink-0 d-none d-sm-block">
-                    <img src="${escapeHTML(thumb)}" class="rounded-4 shadow-sm border border-secondary border-opacity-10" style="width: 85px; height: 85px; object-fit: cover;">
+                    ${ProgressiveImage.inlineThumbnail(thumb, escapeHTML(post.title), '85px', 'rounded-4 shadow-sm border border-secondary border-opacity-10')}
                   </div>
                 </div>
               </div>
             </div>
           `;
         }).join('');
+
+        ProgressiveImage.observe();
       }
     });
   </script>

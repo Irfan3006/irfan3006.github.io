@@ -83,7 +83,7 @@ class API {
       return JSON.parse(cached);
     }
 
-    // Deduplicate: if a request is already in-flight, reuse it
+
     if (this._pendingRequests[cacheKey]) {
       return this._pendingRequests[cacheKey];
     }
@@ -188,13 +188,13 @@ function showLoading() {
 
 function hideLoading() {
   _loadingCount = Math.max(0, _loadingCount - 1);
-  if (_loadingCount > 0) return; // Still has pending requests
+  if (_loadingCount > 0) return;
   
   const loader = document.getElementById('global-loader');
   if (loader) {
     loader.classList.remove('active');
     loader.classList.add('done');
-    // Reset after fade-out completes
+
     setTimeout(() => {
       if (!loader.classList.contains('active')) {
         loader.classList.remove('done');

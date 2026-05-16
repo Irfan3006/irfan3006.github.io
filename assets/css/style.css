@@ -645,3 +645,109 @@ select option {
 .spinner-border {
   color: var(--accent) !important;
 }
+
+/* ===== Progressive Image Loading System ===== */
+
+/* Wrapper that holds shimmer placeholder + real image */
+.img-progressive {
+  position: relative;
+  overflow: hidden;
+  background: var(--stroke);
+}
+
+/* Shimmer placeholder while image loads */
+.img-progressive::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    110deg,
+    var(--stroke) 8%,
+    rgba(255, 255, 255, 0.06) 18%,
+    var(--stroke) 33%
+  );
+  background-size: 200% 100%;
+  animation: imgShimmer 1.5s linear infinite;
+  border-radius: inherit;
+  transition: opacity 0.5s ease;
+}
+
+/* Hide shimmer once image is loaded */
+.img-progressive.loaded::before {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Small icon hint in center while loading */
+.img-progressive::after {
+  content: '\F425'; /* bi-image icon */
+  font-family: 'bootstrap-icons';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  font-size: 1.8rem;
+  color: var(--paragraph);
+  opacity: 0.15;
+  transition: opacity 0.4s ease;
+}
+
+.img-progressive.loaded::after {
+  opacity: 0;
+}
+
+@keyframes imgShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Image inside the progressive wrapper */
+.img-progressive img,
+.img-progressive .progressive-img {
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.img-progressive.loaded img,
+.img-progressive.loaded .progressive-img {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Variant for card thumbnails */
+.card .img-progressive {
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+/* Variant for rounded images (avatars, etc.) */
+.img-progressive.rounded-circle {
+  border-radius: 50%;
+}
+
+/* Variant for the post detail hero thumbnail */
+.img-progressive.post-thumb-wrapper {
+  border-radius: 24px;
+  margin-bottom: 3rem;
+}
+
+/* Recommendation card images */
+.img-progressive.rec-img-wrapper {
+  border-radius: 16px 16px 0 0;
+}
+
+/* Error state — show fallback icon */
+.img-progressive.error::before {
+  opacity: 0;
+}
+
+.img-progressive.error::after {
+  content: '\F622'; /* bi-exclamation-triangle */
+  opacity: 0.3;
+  font-size: 1.5rem;
+  color: #ef4444;
+}

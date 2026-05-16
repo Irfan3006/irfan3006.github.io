@@ -110,7 +110,6 @@
       let allUniqueCats = [...new Set(BLOG_CATEGORIES)];
       let categoryCounts = {};
 
-      // Get counts of posts per category
       const res = await API.getPosts();
       if (res.success) {
         res.data.forEach(p => {
@@ -118,9 +117,6 @@
         });
       }
 
-      // Sort logic: 
-      // 1. Higher post count first
-      // 2. Alphabetical if counts are equal
       allUniqueCats.sort((a, b) => {
         const countA = categoryCounts[a] || 0;
         const countB = categoryCounts[b] || 0;
@@ -150,10 +146,8 @@
         `).join('');
       }
 
-      // Initial render (show all)
       renderCategories(allUniqueCats);
 
-      // Search filtering
       searchInput.addEventListener('input', debounce((e) => {
         const query = e.target.value.toLowerCase();
         const filtered = allUniqueCats.filter(cat => cat.toLowerCase().includes(query));
