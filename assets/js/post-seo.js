@@ -61,7 +61,7 @@ module.exports = async (req, res) => {
           ...titleWords
         ])).join(', ');
         
-        const host = req.headers.host || 'fanblog.vercel.app';
+        const host = req.headers.host || 'fanblog.web.id';
         const defaultThumb = `https://${host}/assets/img/logo.webp`;
         let postThumbnail = defaultThumb;
         if (post.thumbnail) {
