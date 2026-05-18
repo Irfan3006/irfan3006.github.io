@@ -1,0 +1,489 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#4FC3F7">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <title>Contact Us - FanBlog</title>
+  <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+  <meta name="description" content="Hubungi FanBlog melalui formulir kontak kami. Kirimkan pesan, masukan, pertanyaan, atau ajakan kolaborasi langsung ke tim kami.">
+  <meta name="keywords" content="kontak, email, fanblog, hubungi kami, irfan syarifudin, bantul, yogyakarta, alamat fanblog">
+  <meta name="author" content="Irfan Syarifudin">
+  <link rel="canonical" href="https://fanblog.web.id/pages/contact.html">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:site_name" content="FanBlog">
+  <meta property="og:url" content="https://fanblog.web.id/pages/contact.html">
+  <meta property="og:title" content="Contact Us - FanBlog">
+  <meta property="og:description" content="Kirimkan pesan, saran, atau pertanyaan Anda ke FanBlog melalui formulir kontak online kami yang terintegrasi.">
+  <meta property="og:image" content="https://fanblog.web.id/assets/img/logo.webp">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://fanblog.web.id/pages/contact.html">
+  <meta name="twitter:title" content="Contact Us - FanBlog">
+  <meta name="twitter:description" content="Kirimkan pesan, saran, atau pertanyaan Anda ke FanBlog melalui formulir kontak online kami yang terintegrasi.">
+  <meta name="twitter:image" content="https://fanblog.web.id/assets/img/logo.webp">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Contact Us - FanBlog",
+    "url": "https://fanblog.web.id/pages/contact.html",
+    "description": "Formulir kontak resmi FanBlog untuk mengirim pesan dan kolaborasi langsung ke Irfan Syarifudin.",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "FanBlog",
+      "email": "irfansyarifudin79@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "JL Janti Banguntapan",
+        "addressLocality": "Bantul",
+        "addressRegion": "Daerah Istimewa Yogyakarta",
+        "addressCountry": "ID"
+      }
+    }
+  }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <style>
+    :root {
+      --contact-card: #1b2038;
+      --contact-input: rgba(255, 255, 255, 0.02);
+      --contact-border: rgba(255, 255, 255, 0.08);
+      --contact-border-focus: var(--accent);
+    }
+
+    body {
+      overflow-x: hidden;
+      background-color: var(--background);
+      position: relative;
+    }
+
+    .contact-page {
+      padding: 140px 0 100px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .contact-page::before {
+      content: "";
+      position: absolute;
+      top: -10%;
+      left: 10%;
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(79, 195, 247, 0.06) 0%, transparent 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .contact-container {
+      background: var(--contact-card);
+      border: 1px solid var(--contact-border);
+      border-radius: 28px;
+      padding: 3.5rem;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.25);
+    }
+
+    .contact-tag {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      display: inline-block;
+    }
+
+    .contact-title {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      color: var(--headline);
+      margin-bottom: 1rem;
+      letter-spacing: -1px;
+    }
+
+    .contact-subtitle {
+      color: var(--paragraph);
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin: 0 auto 3.5rem;
+      line-height: 1.7;
+    }
+
+    .info-item {
+      padding: 0.5rem 0;
+    }
+
+    .info-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--paragraph);
+      opacity: 0.6;
+      display: block;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+    }
+
+    .info-value {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--headline);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    a.info-value:hover {
+      color: var(--accent) !important;
+    }
+
+    .social-link {
+      font-size: 1.35rem;
+      color: var(--paragraph);
+      opacity: 0.7;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .social-link:hover {
+      color: var(--accent) !important;
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+
+    .contact-form-wrapper {
+      padding-left: 2.5rem;
+      border-left: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .form-group {
+      position: relative;
+    }
+
+    .form-label-minimal {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--headline);
+      margin-bottom: 0.6rem;
+      display: block;
+    }
+
+    .input-wrapper-minimal {
+      position: relative;
+    }
+
+    .form-input-minimal {
+      width: 100%;
+      background: var(--contact-input);
+      border: 1px solid var(--contact-border);
+      border-radius: 14px;
+      color: var(--headline);
+      padding: 14px 18px 14px 46px;
+      font-size: 0.95rem;
+      transition: var(--transition);
+      outline: none;
+    }
+
+    .form-input-minimal:focus {
+      border-color: var(--contact-border-focus);
+      background: rgba(255, 255, 255, 0.04);
+      box-shadow: 0 0 0 4px rgba(79, 195, 247, 0.15);
+    }
+
+    .form-input-minimal::placeholder {
+      color: var(--paragraph);
+      opacity: 0.45;
+    }
+
+    textarea.form-input-minimal {
+      resize: none;
+      padding-top: 16px;
+    }
+
+    .input-icon-minimal {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--paragraph);
+      opacity: 0.5;
+      font-size: 1.1rem;
+      transition: var(--transition);
+      pointer-events: none;
+    }
+
+    .textarea-icon-minimal {
+      top: 20px;
+      transform: none;
+    }
+
+    .form-input-minimal:focus ~ .input-icon-minimal {
+      color: var(--accent);
+      opacity: 0.9;
+    }
+
+    .btn-minimal {
+      width: 100%;
+      background: var(--accent);
+      color: var(--background);
+      border: none;
+      border-radius: 14px;
+      padding: 15px 30px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 10px 25px rgba(79, 195, 247, 0.15);
+    }
+
+    .btn-minimal:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(79, 195, 247, 0.25);
+    }
+
+    .btn-minimal:disabled {
+      background: var(--stroke);
+      color: var(--paragraph);
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .contact-note {
+      font-size: 0.85rem;
+      color: var(--paragraph);
+      opacity: 0.6;
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    @media (max-width: 991.98px) {
+      .contact-container {
+        padding: 2.5rem;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .contact-container {
+        padding: 2rem;
+      }
+      .contact-form-wrapper {
+        padding-left: 0;
+        border-left: none;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+      }
+    }
+
+    @media (max-width: 575.98px) {
+      .contact-page {
+        padding: 100px 0 60px;
+      }
+      .contact-container {
+        padding: 1.5rem;
+        border-radius: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <main class="contact-page">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-xl-10">
+          <div class="contact-container" data-aos="fade-up">
+            
+            <div class="text-center">
+              <span class="contact-tag">Hubungi Kami</span>
+              <h1 class="contact-title">Let's talk.</h1>
+              <p class="contact-subtitle">Punya pertanyaan, ide kolaborasi, atau sekadar ingin menyapa? Kami selalu siap mendengar pesan Anda.</p>
+            </div>
+
+            <div class="row g-4 align-items-stretch">
+              <div class="col-md-5 d-flex flex-column justify-content-between">
+                <div class="contact-info-section">
+                  <div class="info-item mb-4">
+                    <span class="info-label"><i class="bi bi-envelope-at me-2"></i>Email</span>
+                    <a href="mailto:irfansyarifudin79@gmail.com" class="info-value">irfansyarifudin79@gmail.com</a>
+                  </div>
+                  
+                  <div class="info-item mb-4">
+                    <span class="info-label"><i class="bi bi-geo-alt me-2"></i>Lokasi</span>
+                    <p class="info-value text-white m-0">JL Janti Banguntapan, Bantul, DIY</p>
+                  </div>
+                  
+                  <div class="info-item mb-4">
+                    <span class="info-label"><i class="bi bi-clock me-2"></i>Response Time</span>
+                    <p class="info-value text-white m-0">&lt; 24 Jam (Hari Kerja)</p>
+                  </div>
+                </div>
+                
+                <div class="contact-socials mt-auto pt-4 border-top border-secondary border-opacity-10">
+                  <span class="info-label d-block mb-3">Sosial Media</span>
+                  <div class="d-flex gap-3">
+                    <a href="#" class="social-link" aria-label="Github"><i class="bi bi-github"></i></a>
+                    <a href="#" class="social-link" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-link" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-7">
+                <div class="contact-form-wrapper">
+                  <form id="contactForm" class="minimal-form">
+                    <div class="form-group mb-4">
+                      <label for="nama" class="form-label-minimal">Nama Lengkap</label>
+                      <div class="input-wrapper-minimal">
+                        <input type="text" class="form-input-minimal" id="nama" placeholder="Tulis nama Anda" required autocomplete="name">
+                        <i class="bi bi-person input-icon-minimal"></i>
+                      </div>
+                    </div>
+
+                    <div class="form-group mb-4">
+                      <label for="email" class="form-label-minimal">Email</label>
+                      <div class="input-wrapper-minimal">
+                        <input type="email" class="form-input-minimal" id="email" placeholder="nama@email.com" required autocomplete="email">
+                        <i class="bi bi-envelope input-icon-minimal"></i>
+                      </div>
+                    </div>
+
+                    <div class="form-group mb-4">
+                      <label for="pesan" class="form-label-minimal">Pesan</label>
+                      <div class="input-wrapper-minimal">
+                        <textarea class="form-input-minimal" id="pesan" rows="4" placeholder="Tulis pesan Anda disini..." required></textarea>
+                        <i class="bi bi-chat-left-text input-icon-minimal textarea-icon-minimal"></i>
+                      </div>
+                    </div>
+
+                    <button type="submit" class="btn-minimal" id="submitBtn">
+                      <span>Send Message</span>
+                      <i class="bi bi-arrow-right ms-2"></i>
+                    </button>
+                  </form>
+
+                  <div class="contact-note">
+                    <i class="bi bi-shield-check" style="color: var(--accent);"></i>
+                    <span>Terkoneksi dengan aman melalui Google Apps Script.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      AOS.init({ duration: 900, once: true, offset: 80 });
+
+      document.getElementById('contactForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const form = e.target;
+        const nameInput = document.getElementById('nama');
+        const emailInput = document.getElementById('email');
+        const messageInput = document.getElementById('pesan');
+        const submitBtn = document.getElementById('submitBtn');
+
+        const nama = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const pesan = messageInput.value.trim();
+
+        if (!nama || !email || !pesan) {
+          showToast('error', 'Semua Kolom Wajib Diisi', 'Silakan lengkapi semua data sebelum mengirim.');
+          return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          showToast('error', 'Email Tidak Valid', 'Silakan masukkan alamat email yang benar.');
+          return;
+        }
+
+        submitBtn.disabled = true;
+        const btnText = submitBtn.querySelector('span');
+        const originalText = btnText.textContent;
+        btnText.textContent = 'Mengirim Pesan...';
+        showLoading();
+
+        try {
+          const params = new URLSearchParams();
+          params.append('nama', nama);
+          params.append('name', nama);
+          params.append('email', email);
+          params.append('pesan', pesan);
+          params.append('message', pesan);
+          params.append('timestamp', new Date().toISOString());
+
+          await fetch('https://script.google.com/macros/s/AKfycbwFtTt9_DEUZ3NtljVvr9i7OlIdUgZHMo10ewoOF5Noqik71_csInbSoGVfcFoU8YFmqw/exec', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: params.toString()
+          });
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Pesan Terkirim!',
+            text: 'Terima kasih telah menghubungi kami. Kami akan merespon pesan Anda secepatnya.',
+            confirmButtonColor: 'var(--accent)',
+            confirmButtonText: 'Selesai'
+          });
+          form.reset();
+        } catch (error) {
+          console.error('Contact Form submission error:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Gagal Mengirim',
+            text: 'Terjadi masalah saat mengirim pesan. Silakan coba beberapa saat lagi.',
+            confirmButtonColor: 'var(--accent)',
+            confirmButtonText: 'Ok'
+          });
+        } finally {
+          submitBtn.disabled = false;
+          btnText.textContent = originalText;
+          hideLoading();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -6,7 +6,6 @@
   --accent-hover: #29B6F6;
   --stroke: #121629;
 
-  /* Logical Mapping for Components */
   --primary: var(--accent);
   --primary-hover: var(--accent-hover);
   --primary-text: var(--background);
@@ -29,6 +28,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  padding-top: 75px;
 }
 
 /* Typography */
@@ -59,7 +59,6 @@ a:hover, .hover-accent:hover {
   color: var(--accent) !important;
 }
 
-/* Bootstrap Overrides */
 .text-primary {
   color: var(--accent) !important;
 }
@@ -88,13 +87,25 @@ a:hover, .hover-accent:hover {
 
 /* Navbar */
 .navbar {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
   background: rgba(35, 41, 70, 0.75) !important;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   padding: 1rem 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.navbar.navbar-scrolled {
+  padding: 0.6rem 0;
+  background: rgba(35, 41, 70, 0.9) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border-bottom-color: rgba(79, 195, 247, 0.15);
 }
 
 .navbar-brand {
@@ -225,13 +236,13 @@ a:hover, .hover-accent:hover {
   aspect-ratio: 2 / 1;
   width: 100%;
   object-fit: cover;
-  object-position: center; /* Best default for all types of content */
+  object-position: center;
   transition: var(--transition);
   image-rendering: -webkit-optimize-contrast;
   image-rendering: auto;
   backface-visibility: hidden;
   transform: translateZ(0);
-  filter: contrast(1.1) brightness(1.05) saturate(1.1); /* HD Look */
+  filter: contrast(1.1) brightness(1.05) saturate(1.1);
 }
 
 .card:hover .card-img-top {
@@ -353,17 +364,69 @@ footer {
 
 /* Skeleton Loader */
 .skeleton {
-  background: var(--stroke);
-  opacity: 0.5;
-  animation: pulse 1.5s infinite;
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-radius: 24px;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 0.2; }
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 20%,
+    rgba(255, 255, 255, 0.06) 60%,
+    transparent 100%
+  );
+  animation: shimmer 1.6s infinite;
 }
 
-/* Performance: GPU-accelerated transitions */
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+.skeleton-text {
+  height: 12px;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+}
+
+.skeleton-title {
+  height: 20px;
+  width: 80%;
+  margin-bottom: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+}
+
+.skeleton-img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 24px 24px 0 0;
+}
+
+.skeleton-badge {
+  height: 24px;
+  width: 80px;
+  margin-bottom: 12px;
+  background: rgba(79, 195, 247, 0.1);
+  border-radius: 8px;
+}
+
+.skeleton-avatar {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+}
+
 .card,
 .btn,
 .nav-link {
@@ -416,7 +479,6 @@ footer {
   transform: translateY(-5px);
 }
 
-/* SimpleMDE Dark Mode & Sticky Toolbar */
 .editor-container .card,
 .editor-container .card-body {
   overflow: visible !important; 
@@ -559,7 +621,6 @@ select option {
   transform: translateY(0) !important;
 }
 
-/* Legacy overlay (hidden by default, used as fallback) */
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -580,7 +641,6 @@ select option {
   display: flex;
 }
 
-/* Searchable Select Custom UI */
 .search-select-container {
   position: relative;
   width: 100%;
@@ -646,16 +706,13 @@ select option {
   color: var(--accent) !important;
 }
 
-/* ===== Progressive Image Loading System ===== */
 
-/* Wrapper that holds shimmer placeholder + real image */
 .img-progressive {
   position: relative;
   overflow: hidden;
   background: var(--stroke);
 }
 
-/* Shimmer placeholder while image loads */
 .img-progressive::before {
   content: '';
   position: absolute;
@@ -673,15 +730,13 @@ select option {
   transition: opacity 0.5s ease;
 }
 
-/* Hide shimmer once image is loaded */
 .img-progressive.loaded::before {
   opacity: 0;
   pointer-events: none;
 }
 
-/* Small icon hint in center while loading */
 .img-progressive::after {
-  content: '\F425'; /* bi-image icon */
+  content: '\F425';
   font-family: 'bootstrap-icons';
   position: absolute;
   top: 50%;
@@ -703,7 +758,6 @@ select option {
   100% { background-position: -200% 0; }
 }
 
-/* Image inside the progressive wrapper */
 .img-progressive img,
 .img-progressive .progressive-img {
   opacity: 0;
@@ -719,34 +773,28 @@ select option {
   transform: scale(1);
 }
 
-/* Variant for card thumbnails */
 .card .img-progressive {
   border-radius: var(--radius) var(--radius) 0 0;
 }
 
-/* Variant for rounded images (avatars, etc.) */
 .img-progressive.rounded-circle {
   border-radius: 50%;
 }
 
-/* Variant for the post detail hero thumbnail */
 .img-progressive.post-thumb-wrapper {
   border-radius: 24px;
   margin-bottom: 3rem;
 }
-
-/* Recommendation card images */
 .img-progressive.rec-img-wrapper {
   border-radius: 16px 16px 0 0;
 }
 
-/* Error state — show fallback icon */
 .img-progressive.error::before {
   opacity: 0;
 }
 
 .img-progressive.error::after {
-  content: '\F622'; /* bi-exclamation-triangle */
+  content: '\F622';
   opacity: 0.3;
   font-size: 1.5rem;
   color: #ef4444;

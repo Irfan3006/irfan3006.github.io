@@ -171,6 +171,7 @@ function renderNavbar() {
           <li class="nav-item"><a class="nav-link" href="/pages/categories.html">Categories</a></li>
           <li class="nav-item"><a class="nav-link" href="/pages/trending.html">Trending</a></li>
           <li class="nav-item"><a class="nav-link" href="/pages/about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="/pages/contact.html">Contact</a></li>
         </ul>
         <ul class="navbar-nav align-items-lg-center gap-2" id="auth-nav">
           <li class="nav-item d-none d-lg-block">
@@ -198,6 +199,8 @@ function renderFooter() {
         <a href="/pages/guidelines.html" class="text-muted text-decoration-none hover-accent">Guidelines</a>
         <span class="text-muted opacity-25">|</span>
         <a href="/pages/about.html" class="text-muted text-decoration-none hover-accent">About</a>
+        <span class="text-muted opacity-25">|</span>
+        <a href="/pages/contact.html" class="text-muted text-decoration-none hover-accent">Contact</a>
       </div>
       <p class="text-muted mb-2" style="font-size: 0.9rem;">&copy; ${new Date().getFullYear()} FanBlog. All rights reserved.</p>
       <p class="text-muted mb-0" style="font-size: 0.85rem;">
@@ -239,6 +242,17 @@ document.addEventListener('DOMContentLoaded', () => {
   
   document.body.insertAdjacentHTML('beforeend', renderLoader());
   updateNavbar();
+
+  window.addEventListener('scroll', () => {
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+      if (window.scrollY > 20) {
+        navbar.classList.add('navbar-scrolled');
+      } else {
+        navbar.classList.remove('navbar-scrolled');
+      }
+    }
+  });
 
   // Google Analytics (gtag.js)
   const gaId = 'G-Z5K95V81ZB';

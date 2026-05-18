@@ -97,14 +97,12 @@
     <div class="row justify-content-center">
       <div class="col-lg-8">
 
-        <!-- Profile Header (Always visible) -->
         <div class="profile-header shadow" id="profile-header-section">
           <img src="" id="profile-avatar" class="avatar-lg mb-3" alt="Avatar">
           <h2 class="fw-bold mb-1" id="profile-name">Loading...</h2>
           <p class="mb-0 opacity-75" id="profile-role">Role</p>
           <p class="member-since" id="member-since"></p>
 
-          <!-- Email: only visible for profile owner -->
           <span class="badge bg-white text-primary mt-2 px-3 py-2 d-none" id="profile-email">email@example.com</span>
 
           <div class="profile-stats" id="profile-stats">
@@ -115,12 +113,10 @@
           </div>
         </div>
 
-        <!-- Bio Section (Always visible) -->
         <div class="profile-bio d-none" id="bio-section">
           <p class="mb-0" id="profile-bio-text"></p>
         </div>
 
-        <!-- Edit Profile Form (Owner only) -->
         <div class="card shadow-sm border-0 mb-4 d-none" id="edit-profile-section">
           <div class="card-body p-4">
             <h5 class="fw-bold mb-3"><i class="bi bi-pencil-square me-2"></i>Edit Profile</h5>
@@ -139,7 +135,6 @@
           </div>
         </div>
 
-        <!-- Posts Section (Always visible) -->
         <div class="section-title mt-5">
           <h4 class="fw-bold" id="posts-section-title">Posts</h4>
           <div class="line"></div>
@@ -164,31 +159,24 @@
       let isOwner = false;
       let targetUserId = null;
 
-      // Determine which profile to show
       if (profileUserId) {
-        // Public profile: viewing someone's profile via ?user=ID
         targetUserId = profileUserId;
         isOwner = currentUser && currentUser.id === profileUserId;
       } else if (currentUser) {
-        // No ?user param but logged in: show own profile
         targetUserId = currentUser.id;
         isOwner = true;
       } else {
-        // Not logged in and no ?user param: redirect to login
         window.location.href = '/pages/login.html';
         return;
       }
 
-      // Fetch user data from posts (author info is embedded in posts)
       const postsRes = await API.getPosts();
       let profileData = null;
       let userPosts = [];
 
       if (postsRes.success) {
-        // Find posts by this user
         userPosts = postsRes.data.filter(p => p.author_id === targetUserId);
 
-        // Extract profile info from any of the user's posts
         if (userPosts.length > 0) {
           const firstPost = userPosts[0];
           profileData = {
@@ -200,7 +188,6 @@
         }
       }
 
-      // If owner and we have session data, use that (more complete/fresh)
       if (isOwner && currentUser) {
         profileData = {
           id: currentUser.id,
@@ -213,7 +200,6 @@
         };
       }
 
-      // If we still have no profile data, show error
       if (!profileData) {
         document.getElementById('profile-name').innerText = 'User Not Found';
         document.getElementById('profile-role').innerText = '';
@@ -222,7 +208,6 @@
         return;
       }
 
-      // --- Render Profile ---
       const safeUsername = escapeHTML(profileData.username);
       const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(profileData.username)}&size=128`;
 
@@ -231,44 +216,35 @@
       document.getElementById('profile-name').innerText = safeUsername;
       document.getElementById('profile-role').innerText = (profileData.role || 'user').toUpperCase();
 
-      // Update page title & meta
       document.title = `${safeUsername} - FanBlog`;
       document.getElementById('meta-description').content = `Profil ${safeUsername} di FanBlog.`;
       document.getElementById('og-title').content = `${safeUsername} - FanBlog`;
 
-      // Stats
       document.getElementById('stat-posts').innerText = userPosts.length;
 
-      // Member since (only if available)
       if (profileData.created_at) {
         document.getElementById('member-since').innerText = `Bergabung sejak ${formatDate(profileData.created_at)}`;
       }
 
-      // Bio (public - sanitized)
       if (profileData.bio && profileData.bio.trim() !== '') {
         document.getElementById('bio-section').classList.remove('d-none');
         document.getElementById('profile-bio-text').innerText = profileData.bio;
       }
 
-      // --- Owner-Only Sections ---
       if (isOwner && currentUser) {
-        // Show email (owner only)
         const emailEl = document.getElementById('profile-email');
         emailEl.innerText = escapeHTML(currentUser.email);
         emailEl.classList.remove('d-none');
 
-        // Show edit form
         document.getElementById('edit-profile-section').classList.remove('d-none');
         document.getElementById('input-avatar').value = currentUser.avatar || '';
         document.getElementById('input-bio').value = currentUser.bio || '';
         document.getElementById('bio-char-count').innerText = (currentUser.bio || '').length;
 
-        // Bio character counter
         document.getElementById('input-bio').addEventListener('input', function() {
           document.getElementById('bio-char-count').innerText = this.value.length;
         });
 
-        // Edit profile form submission
         document.getElementById('profileForm').addEventListener('submit', async (e) => {
           e.preventDefault();
           const avatar = document.getElementById('input-avatar').value;
@@ -291,17 +267,13 @@
           }
         });
 
-        // Posts section title for owner
         document.getElementById('posts-section-title').innerText = 'My Posts';
       } else {
-        // Public visitor: section title with username
         document.getElementById('posts-section-title').innerText = `Postingan ${safeUsername}`;
-        // Remove noindex for public profiles
         const robotsMeta = document.querySelector('meta[name="robots"]');
         if (robotsMeta) robotsMeta.remove();
       }
 
-      // --- Render Posts ---
       const grid = document.getElementById('user-posts-grid');
 
       if (userPosts.length === 0) {
@@ -315,7 +287,6 @@
           const safeTitle = escapeHTML(post.title);
           const safeCategory = escapeHTML(post.category);
 
-          // Owner gets edit/delete, visitors get read-only cards
           const ownerActions = isOwner ? `
             <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between pb-3">
               <a href="/pages/edit-post.html?id=${encodeURIComponent(post.id)}" class="btn btn-sm btn-outline-primary">
@@ -345,11 +316,9 @@
             </div>
           `;
         }).join('');
-        // Activate progressive image loading
         ProgressiveImage.observe();
       }
 
-      // Delete post function (owner only)
       if (isOwner) {
         window.deleteMyPost = async (id) => {
           const result = await Swal.fire({
