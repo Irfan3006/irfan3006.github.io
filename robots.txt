@@ -1,7 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /pages/admin.html
-Disallow: /pages/create-post.html
-Disallow: /pages/edit-post.html
-
-Sitemap: https://fanblog.web.id/sitemap.xml
