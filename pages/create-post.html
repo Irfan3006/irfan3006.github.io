@@ -24,7 +24,7 @@
     <div class="card shadow-sm border-0">
       <div class="card-body p-4 p-md-5">
         <h2 class="fw-bold mb-4">Write a New Post</h2>
-        <form id="createPostForm">
+        <form id="createPostForm" novalidate>
           <div class="mb-4">
             <label class="form-label fw-500">Judul Postingan</label>
             <input type="text" class="form-control form-control-lg" id="title" placeholder="Masukkan judul yang menarik..." required>
@@ -83,7 +83,18 @@
         const thumbnail = document.getElementById('thumbnail').value;
         const markdownContent = simplemde.value();
         
-        if (!markdownContent) { showToast('error', 'Error', 'Konten tidak boleh kosong'); return; }
+        if (!title || !title.trim()) {
+          showToast('error', 'Error', 'Judul postingan tidak boleh kosong');
+          return;
+        }
+        if (!category) {
+          showToast('error', 'Error', 'Kategori tidak boleh kosong');
+          return;
+        }
+        if (!markdownContent || !markdownContent.trim()) {
+          showToast('error', 'Error', 'Konten postingan tidak boleh kosong');
+          return;
+        }
         const htmlContent = marked.parse(markdownContent);
 
         const postData = {

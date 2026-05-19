@@ -34,7 +34,7 @@
       <div class="card-body p-4 p-md-5">
         <h2 class="fw-bold mb-4">Edit Post</h2>
         
-        <form id="editPostForm" style="display: none;">
+        <form id="editPostForm" style="display: none;" novalidate>
           <div class="mb-4">
             <label class="form-label fw-500">Post Title</label>
             <input type="text" class="form-control form-control-lg" id="title" required>
@@ -127,8 +127,16 @@
         const thumbnail = document.getElementById('thumbnail').value;
         const markdownContent = simplemde.value();
         
-        if (!markdownContent) {
-          showToast('error', 'Error', 'Content cannot be empty');
+        if (!title || !title.trim()) {
+          showToast('error', 'Error', 'Judul postingan tidak boleh kosong');
+          return;
+        }
+        if (!category) {
+          showToast('error', 'Error', 'Kategori tidak boleh kosong');
+          return;
+        }
+        if (!markdownContent || !markdownContent.trim()) {
+          showToast('error', 'Error', 'Konten postingan tidak boleh kosong');
           return;
         }
 
