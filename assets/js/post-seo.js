@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const apiRes = await fetch(`${SCRIPT_URL}?action=get_posts`);
+    const apiRes = await fetch(`${SCRIPT_URL}?action=get_posts&slug=${encodeURIComponent(slug)}`);
     const result = await apiRes.json();
 
     if (result.success && Array.isArray(result.data)) {

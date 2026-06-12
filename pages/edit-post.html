@@ -87,7 +87,7 @@
 
       let simplemde;
 
-      const res = await API.getPosts();
+      const res = await API.getPosts({ post_id: postId });
       if (res.success) {
         const post = res.data.find(p => p.id === postId);
         

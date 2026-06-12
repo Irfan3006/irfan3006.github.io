@@ -74,8 +74,17 @@ class API {
 
   static CACHE_DURATION = 1000 * 60 * 5;
 
-  static async getPosts(forceRefresh = false) {
-    const cacheKey = 'posts_cache';
+  static async getPosts(params = {}, forceRefresh = false) {
+    if (typeof params === 'boolean') {
+      forceRefresh = params;
+      params = {};
+    }
+
+    const hasParams = params && (params.slug || params.post_id);
+    const cacheKey = hasParams
+      ? `posts_cache_${params.slug || ''}_${params.post_id || ''}`
+      : 'posts_cache';
+
     const cached = sessionStorage.getItem(cacheKey);
     const cacheTime = sessionStorage.getItem(cacheKey + '_time');
 
@@ -83,13 +92,13 @@ class API {
       return JSON.parse(cached);
     }
 
-
     if (this._pendingRequests[cacheKey]) {
       return this._pendingRequests[cacheKey];
     }
 
     this._pendingRequests[cacheKey] = (async () => {
-      const res = await this.request('GET', { action: 'get_posts' });
+      const queryData = { action: 'get_posts', ...params };
+      const res = await this.request('GET', queryData);
       if (res.success) {
         sessionStorage.setItem(cacheKey, JSON.stringify(res));
         sessionStorage.setItem(cacheKey + '_time', Date.now());
@@ -119,10 +128,12 @@ class API {
   }
 
   static clearCache() {
-    sessionStorage.removeItem('posts_cache');
-    sessionStorage.removeItem('posts_cache_time');
-    sessionStorage.removeItem('users_cache');
-    sessionStorage.removeItem('users_cache_time');
+    for (let i = sessionStorage.length - 1; i >= 0; i--) {
+      const key = sessionStorage.key(i);
+      if (key && (key.startsWith('posts_cache') || key.startsWith('users_cache'))) {
+        sessionStorage.removeItem(key);
+      }
+    }
   }
 
   static async login(username, password) {

@@ -178,9 +178,7 @@
           const date = formatDate(post.created_at);
           
 
-          const temp = document.createElement('div');
-          temp.innerHTML = sanitizeHTML(post.content);
-          const excerpt = temp.textContent.substring(0, 80) + '...';
+          const excerpt = post.excerpt || '';
 
           card.innerHTML = `
             <div class="card h-100">

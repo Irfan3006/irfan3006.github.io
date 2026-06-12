@@ -391,7 +391,7 @@
       if (!postSlug) { window.location.href = '/'; return; }
 
       const user = Auth.getSession();
-      const res = await API.getPosts();
+      const res = await API.getPosts({ slug: postSlug });
       if (res.success) {
         const post = res.data.find(p => p.slug === postSlug);
         if (post) {
