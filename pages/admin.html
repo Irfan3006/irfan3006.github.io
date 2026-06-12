@@ -80,6 +80,23 @@
                   </div>
                 </div>
               </div>
+              <div class="col-sm-6 col-xl-3">
+                <div class="card admin-card shadow-sm border-0" style="border-left-color: #f59e0b;">
+                  <div class="card-body">
+                    <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0 bg-warning bg-opacity-10 p-3 rounded">
+                        <i class="bi bi-shield-slash fs-3 text-warning"></i>
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                        <p class="text-muted mb-0">Moderasi Spam</p>
+                        <button class="btn btn-sm btn-warning mt-1 fw-bold text-white px-3" id="btn-cleanup-spam" style="border-radius: 8px;">
+                          Scan & Bersihkan
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="card shadow-sm border-0">
               <div class="card-body">
@@ -155,7 +172,7 @@
       let posts = [];
 
       async function loadData() {
-        const [usersRes, postsRes] = await Promise.all([API.getUsers(), API.getPosts()]);
+        const [usersRes, postsRes] = await Promise.all([API.getUsers(user.id), API.getPosts()]);
         if(usersRes.success) {
           users = usersRes.data;
           document.getElementById('stat-users').innerText = users.length;
@@ -259,6 +276,46 @@
           } else { showToast('error', 'Error', res.message); }
         }
       };
+
+      const btnCleanup = document.getElementById("btn-cleanup-spam");
+      if (btnCleanup) {
+        btnCleanup.addEventListener("click", async () => {
+          const result = await Swal.fire({
+            title: "Pindai & Bersihkan Spam?",
+            text: "Sistem akan memindai seluruh postingan di Google Sheets dan menghapus secara otomatis semua postingan yang terdeteksi sebagai spam / melanggar pedoman.",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#f59e0b",
+            confirmButtonText: "Ya, pindai sekarang",
+            cancelButtonText: "Batal",
+          });
+          if (result.isConfirmed) {
+            btnCleanup.disabled = true;
+            btnCleanup.innerHTML = `<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Memindai...`;
+            
+            const res = await API.cleanupSpam(user.id);
+            
+            btnCleanup.disabled = false;
+            btnCleanup.innerHTML = "Scan & Bersihkan";
+            
+            if (res.success) {
+              if (res.count > 0) {
+                const titles = res.deleted.map(p => `<li>${escapeHTML(p.title)}</li>`).join('');
+                await Swal.fire({
+                  title: `Pembersihan Selesai!`,
+                  html: `<p>Berhasil menghapus <strong>${res.count}</strong> postingan spam:</p><ul class="text-start" style="max-height:200px; overflow-y:auto; font-size:0.9rem; color: var(--paragraph);">${titles}</ul>`,
+                  icon: "success"
+                });
+              } else {
+                showToast("success", "Tidak ada postingan spam yang ditemukan.");
+              }
+              loadData();
+            } else {
+              showToast("error", "Error", res.message || "Gagal melakukan pembersihan spam.");
+            }
+          }
+        });
+      }
 
       const triggerTabList = [].slice.call(document.querySelectorAll('.list-group-item'))
       triggerTabList.forEach(function (triggerEl) {

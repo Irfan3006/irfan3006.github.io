@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4oM5SX4wl7izGGrmUP87wQBAXhoWeJNcIuKBYJG7b0xruD-Vgj9kBcPpRBZkvE-6k/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYZkbFsYsmrPlpmoT1noIjD_RR4q7gN0IE7w63VvT051-gb03J-g-dlo4QnK7boN15/exec';
 
 module.exports = async (req, res) => {
   const { slug } = req.query;
